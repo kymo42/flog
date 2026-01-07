@@ -12,6 +12,16 @@ let courses = [];
 let settings = {};
 let markMode = null; // null, 'tee', 'front', 'middle', 'back', 'hazard'
 
+
+// UI Elements - Main Screen
+const distanceFront = document.getElementById("distance-front");
+const distanceMiddle = document.getElementById("distance-middle");
+const distanceBack = document.getElementById("distance-back");
+const holeNumber = document.getElementById("hole-number");
+const courseName = document.getElementById("course-name");
+const parDisplay = document.getElementById("par-display");
+const gpsStatus = document.getElementById("gps-status");
+
 // Other screens
 const startScreen = document.getElementById("start-screen");
 const mainScreen = document.getElementById("main-screen"); // Now initially hidden
@@ -55,8 +65,11 @@ function setupEventListeners() {
     const btnLoadCourse = document.getElementById("btn-load-course");
     const btnSettingsStart = document.getElementById("btn-settings-start");
 
+    console.log("Setup Event Listeners. BtnNewCourse: " + (btnNewCourse ? "FOUND" : "MISSING"));
+
     if (btnNewCourse) {
         btnNewCourse.onclick = () => {
+            console.log("New Course Button CLICKED");
             // Create new course immediately
             currentCourse = storage.createCourse(`Course ${courses.length + 1}`);
             // Init holes
@@ -145,11 +158,20 @@ function setupEventListeners() {
     const btnMarkBack = document.getElementById("btn-mark-back");
     const btnBackMark = document.getElementById("btn-back-mark");
 
+    // Par buttons
+    const btnPar3 = document.getElementById("btn-par-3");
+    const btnPar4 = document.getElementById("btn-par-4");
+    const btnPar5 = document.getElementById("btn-par-5");
+
     if (btnMarkTee) btnMarkTee.onclick = () => markPosition("tee");
     if (btnMarkFront) btnMarkFront.onclick = () => markPosition("front");
     if (btnMarkMiddle) btnMarkMiddle.onclick = () => markPosition("middle");
     if (btnMarkBack) btnMarkBack.onclick = () => markPosition("back");
     if (btnBackMark) btnBackMark.onclick = () => showMainScreen();
+
+    if (btnPar3) btnPar3.onclick = () => setPar(3);
+    if (btnPar4) btnPar4.onclick = () => setPar(4);
+    if (btnPar5) btnPar5.onclick = () => setPar(5);
 
     // Settings buttons
     const btnUnitsYards = document.getElementById("btn-units-yards");
@@ -297,6 +319,12 @@ function updateUI() {
         courseName.text = currentCourse ? currentCourse.name : "No Course";
     }
 
+    // Update Par Display
+    if (parDisplay) {
+        const hole = getCurrentHoleData();
+        parDisplay.text = hole ? `Par ${hole.par || 4}` : "Par 4";
+    }
+
     updateDistances();
     updateGPSStatusUI();
 }
@@ -369,7 +397,46 @@ function showMarkScreen() {
         markHoleNum.text = `Hole ${currentHole}`;
     }
 
+    // Update Par buttons state
+    updateParButtonsUI();
+
     currentView = "mark";
+}
+
+function updateParButtonsUI() {
+    const hole = getCurrentHoleData();
+    const currentPar = hole ? (hole.par || 4) : 4;
+
+    const btnPar3 = document.getElementById("btn-par-3");
+    const btnPar4 = document.getElementById("btn-par-4");
+    const btnPar5 = document.getElementById("btn-par-5");
+
+    const activeColor = "#666666";
+    const inactiveColor = "#333333";
+
+    if (btnPar3) btnPar3.style.fill = (currentPar === 3) ? activeColor : inactiveColor;
+    if (btnPar4) btnPar4.style.fill = (currentPar === 4) ? activeColor : inactiveColor;
+    if (btnPar5) btnPar5.style.fill = (currentPar === 5) ? activeColor : inactiveColor;
+}
+
+function setPar(par) {
+    if (!currentCourse) return;
+
+    let hole = getCurrentHoleData();
+    if (!hole) {
+        hole = storage.createHole(currentHole);
+        currentCourse.holes.push(hole);
+    }
+
+    hole.par = par;
+    storage.saveCourses(courses);
+
+    // Feedback
+    if (settings.vibrationEnabled) {
+        vibration.start("bump");
+    }
+
+    updateParButtonsUI();
 }
 
 function showCourseList() {

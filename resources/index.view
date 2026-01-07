@@ -6,12 +6,19 @@
     <text x="50%" y="40" fill="white" font-size="30" font-weight="bold" text-anchor="middle">Select Course</text>
     
     <!-- Dynamic Course List Placeholder (Simple buttons for now) -->
-    <!-- Ideally this would be a dynamic list, but keeping it simple for SVG -->
-    <rect id="btn-new-course" x="20" y="70" width="300" height="60" fill="#333333" rx="10" pointer-events="all" />
-    <text x="50%" y="110" fill="white" font-size="24" text-anchor="middle" pointer-events="none">+ New Course</text>
+    <!-- New Course Button Group -->
+    <g transform="translate(20, 70)" pointer-events="all">
+        <rect width="300" height="60" fill="#333333" rx="10" />
+        <text x="50%" y="40" fill="white" font-size="24" text-anchor="middle" pointer-events="none">+ New Course</text>
+        <rect id="btn-new-course" width="300" height="60" rx="10" opacity="0" pointer-events="all" />
+    </g>
     
-    <rect id="btn-load-course" x="20" y="150" width="300" height="60" fill="#333333" rx="10" pointer-events="all" />
-    <text id="text-load-course" x="50%" y="190" fill="white" font-size="24" text-anchor="middle" pointer-events="none">Load Saved</text>
+    <!-- Load Course Button Group -->
+    <g transform="translate(20, 150)" pointer-events="all">
+        <rect width="300" height="60" fill="#333333" rx="10" />
+        <text id="text-load-course" x="50%" y="40" fill="white" font-size="24" text-anchor="middle" pointer-events="none">Load Saved</text>
+        <rect id="btn-load-course" width="300" height="60" rx="10" opacity="0" pointer-events="all" />
+    </g>
 
     <!-- Settings Access -->
     <text id="btn-settings-start" x="50%" y="300" fill="#888888" font-size="20" text-anchor="middle" pointer-events="all">Settings</text>
@@ -25,7 +32,8 @@
     <!-- Header info -->
     <text id="course-name" x="50%" y="25" fill="#888888" font-size="16" text-anchor="middle">Course Name</text>
     <text id="hole-number" x="50%" y="45" fill="white" font-size="20" font-weight="bold" text-anchor="middle">Hole 1</text>
-    <text id="gps-status" x="50%" y="65" fill="#444444" font-size="14" text-anchor="middle">GPS...</text>
+    <text id="par-display" x="50%" y="62" fill="#AAAAAA" font-size="16" text-anchor="middle">Par 4</text>
+    <text id="gps-status" x="50%" y="80" fill="#444444" font-size="14" text-anchor="middle">GPS...</text>
     
     <!-- Distances - Minimalist Stack -->
     <g transform="translate(0, 10)">
@@ -61,8 +69,22 @@
     <text x="50%" y="30" fill="white" font-size="24" font-weight="bold" text-anchor="middle">Mark Position</text>
     <text id="mark-hole-num" x="50%" y="55" fill="#888888" font-size="18" text-anchor="middle">Hole 1</text>
     
+    <!-- Par Selection -->
+    <g transform="translate(50, 70)">
+      <text x="100" y="0" fill="#AAAAAA" font-size="16" text-anchor="middle">Set Par:</text>
+      
+      <rect id="btn-par-3" x="0" y="10" width="60" height="40" rx="5" fill="#333333" pointer-events="all"/>
+      <text x="30" y="38" fill="white" font-size="20" text-anchor="middle" pointer-events="none">3</text>
+      
+      <rect id="btn-par-4" x="70" y="10" width="60" height="40" rx="5" fill="#333333" pointer-events="all"/>
+      <text x="100" y="38" fill="white" font-size="20" text-anchor="middle" pointer-events="none">4</text>
+      
+      <rect id="btn-par-5" x="140" y="10" width="60" height="40" rx="5" fill="#333333" pointer-events="all"/>
+      <text x="170" y="38" fill="white" font-size="20" text-anchor="middle" pointer-events="none">5</text>
+    </g>
+
     <!-- Mark Buttons - Desaturated -->
-    <g id="mark-buttons" transform="translate(50, 70)">
+    <g id="mark-buttons" transform="translate(50, 130)">
       <rect id="btn-mark-tee" x="0" y="0" width="200" height="50" rx="5" fill="#333333" pointer-events="all"/>
       <text x="100" y="32" fill="white" font-size="20" text-anchor="middle">Mark Tee</text>
       

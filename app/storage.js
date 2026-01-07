@@ -130,6 +130,6 @@ export function createHole(number) {
         middle: null,
         back: null,
         hazards: [],
-        par: null
+        par: 4
     };
 }
