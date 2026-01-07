@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+package-lock.json
+
+# Build output
+build/
+*.fba
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+.cache/
+
+# Environment
+.env
+.env.local

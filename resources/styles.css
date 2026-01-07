@@ -1,0 +1,14 @@
+.hole-btn {
+    cursor: pointer;
+}
+
+.hole-btn:active {
+    fill: #45a049;
+}
+
+#btn-prev-hole:active,
+#btn-next-hole:active,
+#btn-mark:active,
+#btn-menu:active {
+    opacity: 0.8;
+}

@@ -1,0 +1,41 @@
+{
+    "name": "flog",
+    "version": "1.0.0",
+    "description": "GPS Golf Rangefinder for Fitbit Versa 3",
+    "main": "app/index.js",
+    "scripts": {
+        "build": "fitbit-build",
+        "debug": "fitbit"
+    },
+    "keywords": [
+        "golf",
+        "rangefinder",
+        "gps",
+        "fitbit"
+    ],
+    "author": "Your Name",
+    "license": "MIT",
+    "devDependencies": {
+        "@fitbit/sdk": "~6.1.0",
+        "@fitbit/sdk-cli": "^1.7.3"
+    },
+    "fitbit": {
+        "appUUID": "a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d",
+        "appType": "app",
+        "appDisplayName": "flog",
+        "iconFile": "resources/icon.png",
+        "wipeColor": "#4CAF50",
+        "requestedPermissions": [
+            "access_location",
+            "run_background"
+        ],
+        "buildTargets": [
+            "atlas"
+        ],
+        "i18n": {
+            "en-US": {
+                "name": "flog"
+            }
+        }
+    }
+}
