@@ -367,7 +367,7 @@ function showStartScreen() {
     // Update Load button text/state if courses exist
     const textLoad = document.getElementById("text-load-course");
     if (textLoad) {
-        textLoad.text = (courses.length > 0) ? `Load Saved (${courses.length})` : "Load Saved (0)";
+        textLoad.text = (courses.length > 0) ? `Load (${courses.length})` : "Load";
     }
 }
 
