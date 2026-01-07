@@ -1,14 +1,18 @@
-.hole-btn {
-    cursor: pointer;
+/* Global */
+text {
+    font-family: System-Regular;
+    font-weight: regular;
+    fill: white;
+}
+
+/* Button Interactions */
+/* Simple unified active state for all clickable rects */
+rect:active {
+    fill: #555555 !important;
+    opacity: 1.0;
 }
 
 .hole-btn:active {
-    fill: #45a049;
-}
-
-#btn-prev-hole:active,
-#btn-next-hole:active,
-#btn-mark:active,
-#btn-menu:active {
-    opacity: 0.8;
+    fill: #555555;
+    opacity: 1.0;
 }

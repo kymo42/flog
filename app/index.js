@@ -12,20 +12,9 @@ let courses = [];
 let settings = {};
 let markMode = null; // null, 'tee', 'front', 'middle', 'back', 'hazard'
 
-// UI Elements - Main Screen
-const mainScreen = document.getElementById("main-screen");
-const distanceFront = document.getElementById("distance-front");
-const distanceMiddle = document.getElementById("distance-middle");
-const distanceBack = document.getElementById("distance-back");
-const holeNumber = document.getElementById("hole-number");
-const courseName = document.getElementById("course-name");
-const gpsStatus = document.getElementById("gps-status");
-const btnPrevHole = document.getElementById("btn-prev-hole");
-const btnNextHole = document.getElementById("btn-next-hole");
-const btnMark = document.getElementById("btn-mark");
-const btnMenu = document.getElementById("btn-menu");
-
 // Other screens
+const startScreen = document.getElementById("start-screen");
+const mainScreen = document.getElementById("main-screen"); // Now initially hidden
 const holeSelectScreen = document.getElementById("hole-select-screen");
 const markScreen = document.getElementById("mark-screen");
 const courseListScreen = document.getElementById("course-list-screen");
@@ -40,13 +29,17 @@ function init() {
     settings = storage.loadSettings();
     const savedRound = storage.loadCurrentRound();
 
+    // Setup UI
+    setupEventListeners();
+
     if (savedRound && savedRound.courseId) {
         currentCourse = courses.find(c => c.id === savedRound.courseId);
         currentHole = savedRound.currentHole || 1;
+        showMainScreen(); // Resume game
+    } else {
+        showStartScreen(); // Initial Course Select
     }
 
-    // Setup UI
-    setupEventListeners();
     updateUI();
 
     // Start GPS
@@ -57,7 +50,55 @@ function init() {
 
 // Setup event listeners
 function setupEventListeners() {
+    // Start Screen Buttons
+    const btnNewCourse = document.getElementById("btn-new-course");
+    const btnLoadCourse = document.getElementById("btn-load-course");
+    const btnSettingsStart = document.getElementById("btn-settings-start");
+
+    if (btnNewCourse) {
+        btnNewCourse.onclick = () => {
+            // Create new course immediately
+            currentCourse = storage.createCourse(`Course ${courses.length + 1}`);
+            // Init holes
+            for (let i = 1; i <= 18; i++) {
+                currentCourse.holes.push(storage.createHole(i));
+            }
+            courses.push(currentCourse);
+            storage.saveCourses(courses);
+
+            // Go to mark screen for hole 1
+            currentHole = 1;
+            saveRoundState();
+            showMainScreen(); // Go to main first so we have context, or straight to mark? User wants minimalist.
+            // Let's go to main, "No Course" isn't a thing anymore.
+        };
+    }
+
+    if (btnLoadCourse) {
+        btnLoadCourse.onclick = () => {
+            if (courses.length > 0) {
+                // For now, just load the last one as a placeholder or cycle?
+                // Ideally show list.
+                // Simple logic for V1: Load most recent
+                currentCourse = courses[courses.length - 1];
+                currentHole = 1;
+                saveRoundState();
+                showMainScreen();
+            } else {
+                console.log("No saved courses");
+                // Maybe vibrate error
+                vibration.start("nudge");
+            }
+        };
+    }
+
+    if (btnSettingsStart) btnSettingsStart.onclick = () => showMenu();
+
     // Main screen buttons
+    const btnPrevHole = document.getElementById("btn-prev-hole");
+    const btnNextHole = document.getElementById("btn-next-hole");
+    const btnMark = document.getElementById("btn-mark");
+
     if (btnPrevHole) {
         btnPrevHole.onclick = () => {
             if (currentHole > 1) {
@@ -84,12 +125,6 @@ function setupEventListeners() {
         };
     }
 
-    if (btnMenu) {
-        btnMenu.onclick = () => {
-            showMenu();
-        };
-    }
-
     // Hole select buttons
     for (let i = 1; i <= 18; i++) {
         const btn = document.getElementById(`hole-${i}`);
@@ -108,14 +143,12 @@ function setupEventListeners() {
     const btnMarkFront = document.getElementById("btn-mark-front");
     const btnMarkMiddle = document.getElementById("btn-mark-middle");
     const btnMarkBack = document.getElementById("btn-mark-back");
-    const btnMarkHazard = document.getElementById("btn-mark-hazard");
     const btnBackMark = document.getElementById("btn-back-mark");
 
     if (btnMarkTee) btnMarkTee.onclick = () => markPosition("tee");
     if (btnMarkFront) btnMarkFront.onclick = () => markPosition("front");
     if (btnMarkMiddle) btnMarkMiddle.onclick = () => markPosition("middle");
     if (btnMarkBack) btnMarkBack.onclick = () => markPosition("back");
-    if (btnMarkHazard) btnMarkHazard.onclick = () => markPosition("hazard");
     if (btnBackMark) btnBackMark.onclick = () => showMainScreen();
 
     // Settings buttons
@@ -142,7 +175,12 @@ function setupEventListeners() {
     }
 
     if (btnBackSettings) {
-        btnBackSettings.onclick = () => showMainScreen();
+        // Go back to wherever we came from
+        if (currentCourse) {
+            showMainScreen();
+        } else {
+            showStartScreen();
+        }
     }
 
     // Other back buttons
@@ -150,7 +188,7 @@ function setupEventListeners() {
     const btnBackCourses = document.getElementById("btn-back-courses");
 
     if (btnBackHole) btnBackHole.onclick = () => showMainScreen();
-    if (btnBackCourses) btnBackCourses.onclick = () => showMainScreen();
+    if (btnBackCourses) btnBackCourses.onclick = () => showStartScreen();
 }
 
 // GPS callbacks
@@ -263,18 +301,20 @@ function updateUI() {
     updateGPSStatusUI();
 }
 
-// Update settings UI
+// Update settings UI (Desaturated Logic)
 function updateSettingsUI() {
     const btnUnitsYards = document.getElementById("btn-units-yards");
     const btnUnitsMeters = document.getElementById("btn-units-meters");
 
     if (btnUnitsYards && btnUnitsMeters) {
         if (settings.useYards) {
-            btnUnitsYards.style.fill = "#4CAF50";
-            btnUnitsMeters.style.fill = "#757575";
+            // Yards Active: White/Grey fill? Or Dark fill?
+            // Let's use fill color. #333333 is default. #666666 active?
+            btnUnitsYards.style.fill = "#666666"; // Active
+            btnUnitsMeters.style.fill = "#222222"; // Inactive
         } else {
-            btnUnitsYards.style.fill = "#757575";
-            btnUnitsMeters.style.fill = "#4CAF50";
+            btnUnitsYards.style.fill = "#222222";
+            btnUnitsMeters.style.fill = "#666666";
         }
     }
 }
@@ -291,10 +331,26 @@ function saveRoundState() {
 }
 
 // Screen navigation
+function showStartScreen() {
+    hideAllScreens();
+    if (startScreen) startScreen.style.display = "inline";
+    currentView = "start";
+
+    // Update Load button text/state if courses exist
+    const textLoad = document.getElementById("text-load-course");
+    if (textLoad) {
+        textLoad.text = (courses.length > 0) ? `Load Saved (${courses.length})` : "Load Saved (0)";
+    }
+}
+
 function showMainScreen() {
     hideAllScreens();
     if (mainScreen) mainScreen.style.display = "inline";
     currentView = "main";
+
+    // Update local variables for UI - ensure we have references
+    // (Variables defined at top are consts for elements, but we need to update content)
+    updateUI();
 }
 
 function showHoleSelectScreen() {
@@ -304,21 +360,10 @@ function showHoleSelectScreen() {
 }
 
 function showMarkScreen() {
-    if (!currentCourse) {
-        // Create a default course automatically
-        currentCourse = storage.createCourse("My Course");
-        // Initialize all 18 holes
-        for (let i = 1; i <= 18; i++) {
-            currentCourse.holes.push(storage.createHole(i));
-        }
-        courses.push(currentCourse);
-        storage.saveCourses(courses);
-    }
-
+    // We assume currentCourse exists by this point
     hideAllScreens();
     if (markScreen) markScreen.style.display = "inline";
 
-    // Update hole number on mark screen
     const markHoleNum = document.getElementById("mark-hole-num");
     if (markHoleNum) {
         markHoleNum.text = `Hole ${currentHole}`;
@@ -331,16 +376,17 @@ function showCourseList() {
     hideAllScreens();
     if (courseListScreen) courseListScreen.style.display = "inline";
     currentView = "course-list";
-    // TODO: Populate course list
 }
 
 function showMenu() {
     hideAllScreens();
     if (settingsScreen) settingsScreen.style.display = "inline";
     currentView = "settings";
+    updateSettingsUI();
 }
 
 function hideAllScreens() {
+    if (startScreen) startScreen.style.display = "none";
     if (mainScreen) mainScreen.style.display = "none";
     if (holeSelectScreen) holeSelectScreen.style.display = "none";
     if (markScreen) markScreen.style.display = "none";
