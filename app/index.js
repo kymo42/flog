@@ -222,7 +222,11 @@ function setupEventListeners() {
                 syncCourseToPhone();
             } catch (err) {
                 console.error("MARK: Error saving:", err);
-                document.getElementById("txt-mark-prompt").text = "SAVE ERROR";
+                const errMsg = err.message ? err.message.substring(0, 15) : err.toString().substring(0, 15);
+                document.getElementById("txt-mark-prompt").text = "ERR: " + errMsg;
+                document.getElementById("txt-mark-confirm-btn").text = "TRY AGAIN";
+                // Log state for debugging
+                console.error(`Status - GPS: ${!!lastGpsPos}, Course: ${!!currentCourse}, ID: ${currentCourse ? currentCourse.id : 'N/A'}`);
             }
         } else {
             console.warn("Mark attempted without GPS lock");
