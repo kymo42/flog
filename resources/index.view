@@ -1,144 +1,110 @@
-<svg viewport-fill="#000000">
-  
-  <!-- START SCREEN (Course Selection) -->
-  <svg id="start-screen" display="inline">
+<svg viewport-fill="black">
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- ========================================================== -->
+  <!-- START SCREEN                                               -->
+  <!-- ========================================================== -->
+  <g id="start-screen" display="inline">
     <rect width="100%" height="100%" fill="black" />
-    <!-- Top Header -->
-    <text x="50%" y="40" fill="white" font-size="30" font-weight="bold" text-anchor="middle">Select Course</text>
+    <text x="50%" y="60" fill="white" font-size="50" font-family="System-Bold" text-anchor="middle">FLOG</text>
     
-    <!-- New Course Button Group (Left) -->
-    <g transform="translate(10, 60)" pointer-events="all">
-        <rect width="150" height="200" fill="#333333" rx="10" />
-        <text x="75" y="100" fill="#AAAAAA" font-size="24" text-anchor="middle" pointer-events="none">New</text>
-        <text x="75" y="130" fill="#AAAAAA" font-size="24" text-anchor="middle" pointer-events="none">Course</text>
-        <!-- Hitbox (Visible for Debug/Robustness) -->
-        <rect id="btn-new-course" width="150" height="200" rx="10" fill="white" opacity="0.12" pointer-events="all" />
-    </g>
-    
-    <!-- Load Course Button Group (Right) - Whiter and Larger emphasis -->
-    <g transform="translate(176, 60)" pointer-events="all">
-        <rect width="150" height="200" fill="#555555" rx="10" /> <!-- Brighter fill -->
-        <text id="text-load-course" x="75" y="100" fill="white" font-size="28" font-weight="bold" text-anchor="middle" pointer-events="none">Load</text> <!-- Larger text -->
-        <text x="75" y="130" fill="white" font-size="28" font-weight="bold" text-anchor="middle" pointer-events="none">Saved</text>
-        <!-- Hitbox (Visible for Debug/Robustness) -->
-        <rect id="btn-load-course" width="150" height="200" rx="10" fill="white" opacity="0.12" pointer-events="all" />
+    <g id="btn-new-course" pointer-events="all">
+      <rect x="28" y="100" width="280" height="80" fill="white" rx="15" ry="15" />
+      <text x="168" y="152" fill="black" font-size="30" font-family="System-Bold" text-anchor="middle">NEW COURSE</text>
     </g>
 
-    <!-- Settings Access -->
-    <text id="btn-settings-start" x="50%" y="300" fill="#888888" font-size="20" text-anchor="middle" pointer-events="all">Settings</text>
-  </svg>
-
-  <!-- MAIN RANGEFINDER SCREEN -->
-  <svg id="main-screen" display="none">
-    <!-- Background -->
-    <rect width="100%" height="100%" fill="black"/>
-    
-    <!-- Header info -->
-    <text id="course-name" x="50%" y="25" fill="#888888" font-size="16" text-anchor="middle">Course Name</text>
-    <text id="hole-number" x="50%" y="45" fill="white" font-size="20" font-weight="bold" text-anchor="middle">Hole 1</text>
-    <text id="par-display" x="50%" y="62" fill="#AAAAAA" font-size="16" text-anchor="middle">Par 4</text>
-    <text id="gps-status" x="50%" y="80" fill="#444444" font-size="14" text-anchor="middle">GPS...</text>
-    
-    <!-- Distances - Minimalist Stack -->
-    <g transform="translate(0, 10)">
-      <!-- Back -->
-      <text id="distance-back" x="50%" y="90" fill="#AAAAAA" font-size="30" text-anchor="middle" font-weight="regular">--</text>
-      
-      <!-- Middle (Hero) -->
-      <text id="distance-middle" x="50%" y="160" fill="white" font-size="70" text-anchor="middle" font-weight="bold">--</text>
-      
-      <!-- Front -->
-      <text id="distance-front" x="50%" y="210" fill="#AAAAAA" font-size="30" text-anchor="middle" font-weight="regular">--</text>
+    <g id="btn-load-list" pointer-events="all">
+      <rect x="28" y="200" width="280" height="80" fill="#0055ff" rx="15" ry="15" />
+      <text x="168" y="252" fill="white" font-size="30" font-family="System-Bold" text-anchor="middle">SAVED COURSES</text>
     </g>
-    
-    <!-- Navigation / Actions -->
-    <!-- Invisible touch zones for hole navigation -->
-    <rect id="btn-prev-hole" x="0" y="0" width="80" height="336" fill="black" opacity="0" pointer-events="all"/>
-    <rect id="btn-next-hole" x="256" y="0" width="80" height="336" fill="black" opacity="0" pointer-events="all"/>
-    
-    <!-- Tiny indicators for nav -->
-    <text x="15" y="168" fill="#444444" font-size="30" text-anchor="middle">‹</text>
-    <text x="321" y="168" fill="#444444" font-size="30" text-anchor="middle">›</text>
+  </g>
 
-    <!-- Mark Button (Bottom Center) -->
-    <rect id="btn-mark" x="100" y="270" width="136" height="50" rx="25" fill="#222222" pointer-events="all"/>
-    <text x="168" y="303" fill="white" font-size="20" font-weight="bold" text-anchor="middle" pointer-events="none">MARK</text>
-  </svg>
-
-  
-  <!-- Mark Position Screen -->
-  <svg id="mark-screen" display="none">
-    <rect width="100%" height="100%" fill="black"/>
+  <!-- ========================================================== -->
+  <!-- COURSE LIST SCREEN                                         -->
+  <!-- ========================================================== -->
+  <g id="list-screen" display="none">
+    <rect width="100%" height="100%" fill="black" />
+    <text x="50%" y="40" fill="#aaaaaa" font-size="24" text-anchor="middle">SELECT COURSE</text>
     
-    <text x="50%" y="30" fill="white" font-size="24" font-weight="bold" text-anchor="middle">Mark Position</text>
-    <text id="mark-hole-num" x="50%" y="55" fill="#888888" font-size="18" text-anchor="middle">Hole 1</text>
-    
-    <!-- Par Selection -->
-    <g transform="translate(50, 70)">
-      <text x="100" y="0" fill="#AAAAAA" font-size="16" text-anchor="middle">Set Par:</text>
-      
-      <rect id="btn-par-3" x="0" y="10" width="60" height="40" rx="5" fill="#333333" pointer-events="all"/>
-      <text x="30" y="38" fill="white" font-size="20" text-anchor="middle" pointer-events="none">3</text>
-      
-      <rect id="btn-par-4" x="70" y="10" width="60" height="40" rx="5" fill="#333333" pointer-events="all"/>
-      <text x="100" y="38" fill="white" font-size="20" text-anchor="middle" pointer-events="none">4</text>
-      
-      <rect id="btn-par-5" x="140" y="10" width="60" height="40" rx="5" fill="#333333" pointer-events="all"/>
-      <text x="170" y="38" fill="white" font-size="20" text-anchor="middle" pointer-events="none">5</text>
+    <g id="btn-course-0" pointer-events="all" display="none">
+      <rect x="10" y="60" width="316" height="60" fill="#222222" rx="10" ry="10" />
+      <text id="txt-course-0" x="50%" y="100" fill="white" font-size="24" text-anchor="middle">---</text>
+    </g>
+    <g id="btn-course-1" pointer-events="all" display="none">
+      <rect x="10" y="130" width="316" height="60" fill="#222222" rx="10" ry="10" />
+      <text id="txt-course-1" x="50%" y="170" fill="white" font-size="24" text-anchor="middle">---</text>
+    </g>
+    <g id="btn-course-2" pointer-events="all" display="none">
+      <rect x="10" y="200" width="316" height="60" fill="#222222" rx="10" ry="10" />
+      <text id="txt-course-2" x="50%" y="240" fill="white" font-size="24" text-anchor="middle">---</text>
     </g>
 
-    <!-- Mark Buttons - Desaturated -->
-    <g id="mark-buttons" transform="translate(50, 130)">
-      <rect id="btn-mark-tee" x="0" y="0" width="200" height="50" rx="5" fill="#333333" pointer-events="all"/>
-      <text x="100" y="32" fill="white" font-size="20" text-anchor="middle">Mark Tee</text>
-      
-      <rect id="btn-mark-front" x="0" y="60" width="200" height="50" rx="5" fill="#333333" pointer-events="all"/>
-      <text x="100" y="92" fill="white" font-size="20" text-anchor="middle">Mark Front</text>
-      
-      <rect id="btn-mark-middle" x="0" y="120" width="200" height="50" rx="5" fill="#333333" pointer-events="all"/>
-      <text x="100" y="152" fill="white" font-size="20" text-anchor="middle">Mark Middle</text>
-      
-      <rect id="btn-mark-back" x="0" y="180" width="200" height="50" rx="5" fill="#333333" pointer-events="all"/>
-      <text x="100" y="212" fill="white" font-size="20" text-anchor="middle">Mark Back</text>
+    <g id="btn-list-back" pointer-events="all">
+      <rect x="28" y="270" width="280" height="50" fill="#444444" rx="10" ry="10" />
+      <text x="50%" y="305" fill="white" font-size="24" text-anchor="middle">BACK</text>
     </g>
-    
-    <rect id="btn-back-mark" x="75" y="280" width="150" height="45" rx="5" fill="#222222" pointer-events="all"/>
-    <text x="150" y="308" fill="white" font-size="20" text-anchor="middle">BACK</text>
-  </svg>
+  </g>
 
-  
-  <!-- Course List Screen (Placeholder) -->
-  <svg id="course-list-screen" display="none">
-    <rect width="100%" height="100%" fill="#1a3a1a"/>
+  <!-- ========================================================== -->
+  <!-- MAIN SCREEN (Active Round)                                 -->
+  <!-- ========================================================== -->
+  <g id="main-screen" display="none">
+    <rect width="100%" height="100%" fill="black" />
     
-    <text x="50%" y="30" fill="white" font-size="24" font-weight="bold" text-anchor="middle">
-      My Courses
-    </text>
-    
-    <text x="50%" y="200" fill="#90EE90" font-size="18" text-anchor="middle">
-      Coming Soon!
-    </text>
-    
-    <rect id="btn-back-courses" x="75" y="360" width="150" height="45" rx="5" fill="#757575" pointer-events="all"/>
-    <text x="150" y="388" fill="white" font-size="20" text-anchor="middle">BACK</text>
-  </svg>
-  
-  <!-- Settings Screen -->
-  <svg id="settings-screen" display="none">
-    <rect width="100%" height="100%" fill="black"/>
-    
-    <text x="50%" y="40" fill="white" font-size="24" font-weight="bold" text-anchor="middle">Settings</text>
-    
-    <g transform="translate(30, 80)">
-      <text x="0" y="0" fill="#888888" font-size="18">Distance Units:</text>
-      <rect id="btn-units-yards" x="0" y="15" width="100" height="50" rx="5" fill="#333333" pointer-events="all"/>
-      <text x="50" y="47" fill="white" font-size="20" text-anchor="middle">Yards</text>
-      
-      <rect id="btn-units-meters" x="110" y="15" width="100" height="50" rx="5" fill="#222222" pointer-events="all"/>
-      <text x="160" y="47" fill="#888888" font-size="20" text-anchor="middle">Meters</text>
+    <!-- Mode Toggle Button (Edit/Lock) -->
+    <g id="btn-mode-toggle" pointer-events="all">
+      <rect x="250" y="5" width="80" height="40" fill="#333333" rx="5" ry="5" />
+      <text id="txt-mode-status" x="290" y="32" fill="white" font-size="20" text-anchor="middle">EDIT</text>
     </g>
+
+    <!-- HEADER: COURSE NAME -->
+    <text id="txt-main-title" x="50%" y="35" fill="white" font-size="24" font-family="System-Bold" text-anchor="middle">COURSE NAME</text>
+    <text id="txt-hole-num" x="50%" y="65" fill="#aaaaaa" font-size="24" text-anchor="middle">HOLE 1</text>
     
-    <rect id="btn-back-settings" x="75" y="280" width="150" height="45" rx="5" fill="#222222" pointer-events="all"/>
-    <text x="150" y="308" fill="white" font-size="20" text-anchor="middle">BACK</text>
-  </svg>
+    <!-- BIG DISTANCE DISPLAY -->
+    <text id="txt-distance" x="50%" y="175" fill="white" font-size="110" font-family="System-Bold" text-anchor="middle">---</text>
+    <text id="txt-unit" x="50%" y="215" fill="#00ff00" font-size="24" text-anchor="middle">METERS TO CENTER</text>
+
+    <!-- UI Divider -->
+    <rect x="10%" y="238" width="80%" height="1" fill="#333333" />
+
+    <!-- CONTROLS FOOTER -->
+    <g id="btn-prev-hole" pointer-events="all">
+      <rect x="10" y="250" width="80" height="70" fill="#222222" rx="10" ry="10" />
+      <text x="50" y="295" fill="white" font-size="40" text-anchor="middle">&lt;</text>
+    </g>
+
+    <!-- MARK BUTTON (Now Dynamic) -->
+    <g id="btn-mark" pointer-events="all" display="none">
+      <rect x="100" y="250" width="136" height="70" fill="#ffcc00" rx="10" ry="10" />
+      <text x="168" y="295" fill="black" font-size="28" font-family="System-Bold" text-anchor="middle">MARK</text>
+    </g>
+
+    <!-- LOCKED INDICATOR (Shown instead of Mark when locked) -->
+    <g id="btn-locked-indicator" pointer-events="all">
+      <rect x="100" y="250" width="136" height="70" fill="#111111" rx="10" ry="10" />
+      <text x="168" y="293" fill="#444444" font-size="20" text-anchor="middle">PLAY MODE</text>
+    </g>
+
+    <g id="btn-next-hole" pointer-events="all">
+      <rect x="246" y="250" width="80" height="70" fill="#222222" rx="10" ry="10" />
+      <text x="286" y="295" fill="white" font-size="40" text-anchor="middle">&gt;</text>
+    </g>
+  </g>
+
+  <!-- ========================================================== -->
+  <!-- MARK SCREEN                                                -->
+  <!-- ========================================================== -->
+  <g id="mark-screen" display="none">
+    <rect width="100%" height="100%" fill="#111111" />
+    <text x="50%" y="70" fill="white" font-size="30" text-anchor="middle">Mark Green Location?</text>
+    <g id="btn-mark-confirm" pointer-events="all">
+      <rect x="10%" y="110" width="80%" height="80" fill="#00aa00" rx="15" ry="15" />
+      <text x="50%" y="160" fill="white" font-size="34" font-family="System-Bold" text-anchor="middle">YES, SET HERE</text>
+    </g>
+    <g id="btn-mark-cancel" pointer-events="all">
+      <rect x="10%" y="210" width="80%" height="80" fill="#aa0000" rx="15" ry="15" />
+      <text x="50%" y="260" fill="white" font-size="34" font-family="System-Bold" text-anchor="middle">CANCEL</text>
+    </g>
+  </g>
 </svg>

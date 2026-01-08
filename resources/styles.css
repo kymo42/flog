@@ -1,18 +1,4 @@
-/* Global */
+/* CSS reset for debugging */
 text {
-    font-family: System-Regular;
-    font-weight: regular;
-    fill: white;
-}
-
-/* Button Interactions */
-/* Simple unified active state for all clickable rects */
-rect:active {
-    fill: #555555 !important;
-    opacity: 1.0;
-}
-
-.hole-btn:active {
-    fill: #555555;
-    opacity: 1.0;
+  font-family: System-Regular;
 }

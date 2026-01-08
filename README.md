@@ -1,137 +1,71 @@
-# Golf Rangefinder for Fitbit Versa 3
+# ⛳ FLOG - Simple Golf Rangefinder
 
-A GPS-based golf rangefinder app for your Fitbit Versa 3 smartwatch. Works on ANY golf course worldwide with manual hole marking.
+**FLOG** is a super simple, "no-fuss" rangefinder for your **Fitbit Versa 3** or **Fitbit Sense**. 
 
-## Features
-
-- ✅ **Real-time GPS Distance Measurement** - See distances to front, middle, and back of green
-- ✅ **Manual Hole Marking** - Mark tee boxes, greens, and hazards as you play
-- ✅ **18-Hole Support** - Full round tracking for any golf course
-- ✅ **Multiple Course Storage** - Save all your favorite courses locally
-- ✅ **No Subscriptions** - Completely free, no paid services required
-- ✅ **Works Anywhere** - Use on any golf course in the world
-- ✅ **Yards or Meters** - Choose your preferred distance units
-- ✅ **Battery Efficient** - Optimized GPS usage for 4+ hour rounds
-
-## How to Use
-
-### First Time Setup
-
-1. **Install the app** on your Fitbit Versa 3 using the Fitbit Developer Bridge or Fitbit Gallery
-2. **Start the app** and allow GPS permissions
-3. **Go to a golf course** and wait for GPS lock (green status)
-
-### Marking a Course
-
-1. Stand at the **tee box** and tap **MARK** → **Mark Tee**
-2. Walk to the green and mark **Front**, **Middle**, and **Back** positions
-3. Optionally mark hazards (bunkers, water) for reference
-4. Repeat for all 18 holes (you can do this during your first round)
-
-### During a Round
-
-1. The app shows real-time distances to:
-   - **Front of green**
-   - **Middle of green**  
-   - **Back of green**
-2. Use **◄ ►** buttons to navigate between holes
-3. GPS updates automatically as you move
-
-### Managing Courses
-
-- Courses are saved automatically on your watch
-- Store unlimited courses with no cloud storage needed
-- Each course remembers all hole positions
-
-## Installation
-
-### Prerequisites
-
-- Fitbit Versa 3 watch
-- Fitbit account
-- Node.js installed on your computer
-- Fitbit Developer account (free at https://dev.fitbit.com)
-
-### Steps
-
-1. **Clone or download this project**
-
-2. **Install dependencies:**
-   ```bash
-   cd golf-rangefinder
-   npm install
-   ```
-
-3. **Build the app:**
-   ```bash
-   npm run build
-   ```
-
-4. **Enable Developer Bridge on your Versa 3:**
-   - Go to Settings → About → Developer Mode
-   - Turn on Developer Bridge
-
-5. **Connect and install:**
-   ```bash
-   npx fitbit
-   ```
-   - Follow prompts to connect to your watch
-   - App will be installed automatically
-
-## Tips for Best Results
-
-- **GPS Accuracy**: Start the app with a clear view of the sky
-- **Battery**: Charge your watch to 80%+ before rounds
-- **First Lock**: GPS may take 20-30 seconds on first launch
-- **Marking Strategy**: Mark holes during practice rounds or as you play
-- **Accuracy**: Stand still when marking positions for best precision
-
-## Troubleshooting
-
-**GPS won't lock:**
-- Ensure you're outdoors with clear sky view
-- Sync your Fitbit before starting (improves GPS acquisition)
-- Wait up to 60 seconds for initial lock
-
-**App won't install:**
-- Verify Fitbit Developer Bridge is enabled
-- Check your Fitbit account is logged in
-- Try restarting your watch
-
-**Distances seem wrong:**
-- Check GPS status (should show "Good" or "Excellent")
-- Verify you marked the correct positions
-- Re-mark positions if needed
-
-## Development
-
-Want to customize the app? Here's the structure:
-
-```
-golf-rangefinder/
-├── app/              # Main watch app
-│   ├── index.js      # App logic
-│   ├── gps.js        # GPS management
-│   ├── distance.js   # Distance calculations
-│   └── storage.js    # Data storage
-├── resources/        # UI files
-│   ├── index.view    # SVG UI layout
-│   └── styles.css    # Styling
-├── companion/        # Phone companion app
-│   └── index.js      # Settings sync
-├── settings/         # Settings UI
-│   └── index.jsx     # Settings page
-└── package.json      # Project config
-```
-
-## License
-
-MIT License - Free to use and modify!
-
-## Credits
-
-Built with the Fitbit SDK. Distance calculations use the Haversine formula for GPS accuracy.
+It handles the distances so you can focus on your swing. It works on **ANY** golf course in the world because you teach it where the greens are as you play!
 
 ---
 
-**Enjoy your rounds! ⛳**
+## 🚀 Quick Start (In 3 Simple Steps)
+
+### 1. Start a Round
+On your watch, tap **NEW COURSE**. The watch will start looking for your location (GPS).
+
+### 2. "Mark" Your Greens
+The first time you play a course, walk to the **middle of the green** on Hole 1. 
+1. Tap the red **EDIT** button in the top corner (this "unlocks" the marking button).
+2. Tap the yellow **MARK** button.
+3. Your watch vibrates. **Done!** Now the watch knows exactly where that green is. 
+4. Tap **EDIT** again to lock it (Back to "Play Mode").
+
+### 3. Just Play
+Next time you stand on the fairway, the watch will show you exactly how many **Meters** (or Yards) you are from the center of that green. 
+
+---
+
+## 📱 How to Name Your Course
+By default, rounds are named "New Round". To give it a real name (like *Pebble Beach*):
+1. Open the **Fitbit App** on your phone.
+2. Tap your **Watch Icon** (top left).
+3. Tap **Gallery** → **Flog** → **Settings**.
+4. Type the name in the **"Course Name"** box.
+5. Your watch will update instantly!
+
+---
+
+## 🤝 How to Share with Friends
+Did you map a perfect course? Share it with your buddies!
+1. Go to the **Flog Settings** on your phone (see above).
+2. Copy the long **Export Code**.
+3. Text it to your friend.
+4. They paste it into their **"Import Code"** box.
+5. Their watch now has all your markers!
+
+---
+
+## ⚙️ Simple Settings
+You can choose your units in the phone settings:
+*   **Meters** (Default)
+*   **Yards**
+
+---
+
+## 💡 Pro Tips for Non-Techies
+*   **Wait for GPS**: When you first start, stand outside for 30 seconds. The numbers will show "---" until the watch finds the satellites.
+*   **Play Mode vs Edit Mode**: Most of the time, keep it in **Play Mode** (locked). This prevents you from accidentally moving a hole marker if you bump your watch.
+*   **Battery**: GPS uses a lot of battery. Make sure your watch has at least 50% charge before you start 18 holes.
+*   **Saving**: You don't need to click "Save". Every time you **MARK** a hole, it is saved forever on your watch.
+
+---
+
+## 🛠 Installation for Techies
+If you are installing this manually:
+1. `npm install`
+2. `npm run build`
+3. Use the [Fitbit Developer Bridge](https://dev.fitbit.com/build/guides/command-line-interface/) to install to your watch.
+
+---
+
+**Hit 'em straight! 🏌️‍♂️**
+
+[Open Source GitHub Project](https://github.com/kymo42/fine-parking-app)

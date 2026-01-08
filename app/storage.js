@@ -60,12 +60,13 @@ export function loadSettings() {
  */
 function getDefaultSettings() {
     return {
-        useYards: true,
+        useYards: false,
         gpsAccuracy: "high",
         vibrationEnabled: true,
         autoAdvanceHole: false
     };
 }
+
 
 /**
  * Save current round data
@@ -108,13 +109,25 @@ export function clearCurrentRound() {
  * @returns {Object} New course object
  */
 export function createCourse(name) {
-    return {
+    const course = {
         id: Date.now().toString(),
         name: name,
         holes: [],
         createdAt: Date.now(),
         lastPlayed: null
     };
+
+    // Initialize 18 holes
+    for (let i = 1; i <= 18; i++) {
+        course.holes.push(createHole(i));
+    }
+
+    // Save it
+    const courses = loadCourses();
+    courses.push(course);
+    saveCourses(courses);
+
+    return course;
 }
 
 /**
@@ -125,11 +138,41 @@ export function createCourse(name) {
 export function createHole(number) {
     return {
         number: number,
-        tee: null,
-        front: null,
-        middle: null,
-        back: null,
-        hazards: [],
+        latitude: null, // Using simplified coordinate names
+        longitude: null,
         par: 4
     };
 }
+
+/**
+ * Load a single course by ID
+ * @param {string} id 
+ * @returns {Object|null}
+ */
+export function loadCourse(id) {
+    const courses = loadCourses();
+    return courses.find(c => c.id === id) || null;
+}
+
+/**
+ * Update a hole's data in a specific course
+ * @param {string} courseId 
+ * @param {number} holeNumber 
+ * @param {Object} data 
+ */
+export function updateHole(courseId, holeNumber, data) {
+    const courses = loadCourses();
+    const courseIndex = courses.findIndex(c => c.id === courseId);
+
+    if (courseIndex !== -1) {
+        const holeIndex = courses[courseIndex].holes.findIndex(h => h.number === holeNumber);
+        if (holeIndex !== -1) {
+            courses[courseIndex].holes[holeIndex] = {
+                ...courses[courseIndex].holes[holeIndex],
+                ...data
+            };
+            saveCourses(courses);
+        }
+    }
+}
+

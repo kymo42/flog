@@ -1,9 +1,50 @@
 import { settingsStorage } from "settings";
-import { me as companion } from "companion";
+import * as messaging from "messaging";
 
-// Settings changed from phone app
-settingsStorage.addEventListener("change", (evt) => {
-    console.log(`Setting changed: ${evt.key} = ${evt.newValue}`);
-});
+console.log("Companion sharing service started");
 
-console.log("Companion app started");
+// Listen for messages from the watch
+messaging.peerSocket.onmessage = (evt) => {
+    const d = evt.data;
+    if (d.type === "export-course") {
+        console.log("Generating export code for: " + d.data.name);
+        // Serialize course to base64 code
+        const json = JSON.stringify(d.data);
+        const code = btoa(json); // Simple Base64
+        settingsStorage.setItem("courseExportCode", code);
+        settingsStorage.setItem("courseName", JSON.stringify(d.data.name));
+    }
+};
+
+// Listen for settings changes from the phone
+settingsStorage.onchange = (evt) => {
+    if (evt.key === "courseImportCode" && evt.newValue) {
+        try {
+            const rawCode = JSON.parse(evt.newValue);
+            if (rawCode && rawCode.length > 20) {
+                console.log("Importing course from code...");
+                const decodedJson = atob(rawCode);
+                const courseData = JSON.parse(decodedJson);
+
+                if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
+                    messaging.peerSocket.send({
+                        type: "import-course",
+                        data: courseData
+                    });
+                    // Clear the import field after success
+                    settingsStorage.removeItem("courseImportCode");
+                }
+            }
+        } catch (e) {
+            console.error("Invalid Course Code format");
+        }
+    } else {
+        // Standard settings forwarding
+        if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
+            messaging.peerSocket.send({
+                key: evt.key,
+                newValue: JSON.parse(evt.newValue)
+            });
+        }
+    }
+};
