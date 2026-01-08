@@ -161,18 +161,69 @@ export function loadCourse(id) {
  * @param {Object} data 
  */
 export function updateHole(courseId, holeNumber, data) {
-    const courses = loadCourses();
-    const courseIndex = courses.findIndex(c => c.id === courseId);
+    try {
+        console.log("STORAGE: updateHole start", courseId, holeNumber);
 
-    if (courseIndex !== -1) {
-        const holeIndex = courses[courseIndex].holes.findIndex(h => h.number === holeNumber);
-        if (holeIndex !== -1) {
-            courses[courseIndex].holes[holeIndex] = {
-                ...courses[courseIndex].holes[holeIndex],
-                ...data
-            };
-            saveCourses(courses);
+        // 1. Load
+        let courses;
+        try {
+            courses = loadCourses();
+            if (!courses) throw new Error("Courses list is null");
+        } catch (e) {
+            console.error("STORAGE: loadCourses fail", e);
+            throw e; // Rethrow to main handler
         }
+
+        // 2. Find Course
+        let courseIndex;
+        try {
+            // Manual loop instead of findIndex to test function availability
+            // const courseIndex = courses.findIndex(c => c.id === courseId);
+            courseIndex = -1;
+            for (let i = 0; i < courses.length; i++) {
+                if (courses[i].id === courseId) {
+                    courseIndex = i;
+                    break;
+                }
+            }
+        } catch (e) {
+            console.error("STORAGE: inner loop fail", e);
+            throw e;
+        }
+
+        if (courseIndex !== -1) {
+            // 3. Find Hole
+            try {
+                const holes = courses[courseIndex].holes;
+                let holeIndex = -1;
+                for (let j = 0; j < holes.length; j++) {
+                    if (holes[j].number === holeNumber) {
+                        holeIndex = j;
+                        break;
+                    }
+                }
+
+                if (holeIndex !== -1) {
+                    // 4. Update
+                    courses[courseIndex].holes[holeIndex] = {
+                        ...courses[courseIndex].holes[holeIndex],
+                        ...data
+                    };
+
+                    // 5. Save
+                    console.log("STORAGE: About to saveCourses");
+                    saveCourses(courses);
+                }
+            } catch (e) {
+                console.error("STORAGE: Hole update/save fail", e);
+                throw e;
+            }
+        } else {
+            console.warn("STORAGE: Course not found for update");
+        }
+    } catch (outerErr) {
+        console.error("STORAGE: Outer Error", outerErr);
+        throw outerErr; // Ensure it bubbles up to main handler
     }
 }
 
