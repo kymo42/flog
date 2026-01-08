@@ -206,28 +206,37 @@ function setupEventListeners() {
         console.log(`MARK: GPS Lock: ${lastGpsPos ? 'YES' : 'NO'}`);
 
         if (lastGpsPos) {
+            // 1. Vibration
             try {
-                vibration.start("confirmation");
-                console.log(`MARK: Saving ${lastGpsPos.latitude}, ${lastGpsPos.longitude} for Hole ${currentHole}`);
+                if (vibration) vibration.start("confirmation");
+            } catch (e) {
+                console.error("VIB ERR", e);
+                document.getElementById("txt-mark-prompt").text = "ERR: VIB";
+                return;
+            }
 
+            // 2. Storage
+            try {
+                console.log(`MARK: Saving ${lastGpsPos.latitude}, ${lastGpsPos.longitude}`);
                 storage.updateHole(currentCourse.id, currentHole, {
                     latitude: lastGpsPos.latitude,
                     longitude: lastGpsPos.longitude
                 });
-
-                console.log("MARK: Save success, reloading course");
                 currentCourse = storage.loadCourse(currentCourse.id);
+            } catch (e) {
+                console.error("STORE ERR", e);
+                document.getElementById("txt-mark-prompt").text = "ERR: STORE";
+                return;
+            }
 
+            // 3. UI & Sync
+            try {
                 showScreen("main-screen");
                 updateUI();
                 syncCourseToPhone();
-            } catch (err) {
-                console.error("MARK: Error saving:", err);
-                const errMsg = err.message ? err.message.substring(0, 15) : err.toString().substring(0, 15);
-                document.getElementById("txt-mark-prompt").text = "ERR: " + errMsg;
-                document.getElementById("txt-mark-confirm-btn").text = "TRY AGAIN";
-                // Log state for debugging
-                console.error(`Status - GPS: ${!!lastGpsPos}, Course: ${!!currentCourse}, ID: ${currentCourse ? currentCourse.id : 'N/A'}`);
+            } catch (e) {
+                console.error("SYNC ERR", e);
+                document.getElementById("txt-mark-prompt").text = "ERR: SYNC";
             }
         } else {
             console.warn("Mark attempted without GPS lock");
@@ -275,6 +284,7 @@ messaging.peerSocket.onmessage = (evt) => {
 
 gps.startGPS((pos) => { lastGpsPos = pos; updateUI(); }, (err) => { console.warn(err); });
 
+
 setupEventListeners();
 showScreen("start-screen");
-vibration.start("nudge");
+if (vibration) vibration.start("nudge");
