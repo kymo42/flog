@@ -4,8 +4,9 @@ import * as gps from "./gps";
 import * as storage from "./storage";
 import { calculateDistance } from "./distance";
 import * as messaging from "messaging";
+import { display } from "display";
 
-console.log("Flog v3.9 - Navigation & GPS Fix");
+console.log("Flog v4.0 - GPS Fixes");
 
 // State
 let currentCourse = null;
@@ -21,6 +22,7 @@ const txtHoleNum = document.getElementById("txt-hole-num");
 const txtUnit = document.getElementById("txt-unit");
 const txtMainTitle = document.getElementById("txt-main-title");
 const txtModeStatus = document.getElementById("txt-mode-status");
+const txtGpsStatus = document.getElementById("txt-gps-status");
 const rectModeBg = document.getElementById("rect-mode-bg");
 const btnMark = document.getElementById("btn-mark");
 const btnModeToggle = document.getElementById("btn-mode-toggle");
@@ -32,10 +34,32 @@ function showScreen(screenId) {
         const el = document.getElementById(s);
         if (el) el.style.display = (s === screenId) ? "inline" : "none";
     });
+
+    // Control screen power
+    if (screenId === "main-screen" || screenId === "mark-screen") {
+        display.autoOff = false;
+        display.on = true;
+    } else {
+        display.autoOff = true;
+    }
 }
 
 function updateUI() {
     if (!currentCourse) return;
+
+    // GPS Status Display
+    if (txtGpsStatus) {
+        txtGpsStatus.text = `GPS: ${gps.getGPSStatus().toUpperCase()}`;
+        // Color coding for status
+        const status = gps.getGPSStatus();
+        if (status === "Excellent" || status === "Good") txtGpsStatus.style.fill = "#00ff00";
+        else if (status === "Fair") txtGpsStatus.style.fill = "#ffff00";
+        else txtGpsStatus.style.fill = "#aaaaaa";
+    }
+
+    // Keep screen awake while in main round view
+    display.on = true;
+    display.autoOff = false;
 
     // Mode handling
     if (isSetupMode) {

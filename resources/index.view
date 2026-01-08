@@ -51,6 +51,9 @@
   <g id="main-screen" display="none">
     <rect width="100%" height="100%" fill="black" />
     
+    <!-- GPS STATUS -->
+    <text id="txt-gps-status" x="10" y="32" fill="#aaaaaa" font-size="20">GPS: WAIT</text>
+
     <!-- Mode Toggle Button (Edit/Lock) -->
     <g id="btn-mode-toggle" pointer-events="all">
       <rect id="rect-mode-bg" x="250" y="5" width="80" height="40" fill="#333333" rx="5" ry="5" />

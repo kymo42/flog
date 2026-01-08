@@ -54,8 +54,8 @@ export function startGPS(onPosition, onError) {
             },
             {
                 enableHighAccuracy: true,
-                timeout: 60000, // 60 seconds
-                maximumAge: 5000 // 5 seconds
+                timeout: 30000,      // 30 seconds (don't hang too long)
+                maximumAge: 1000     // 1 second (fresher data)
             }
         );
     } catch (error) {
