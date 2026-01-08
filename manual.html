@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FLOG User Manual</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 20px;
+        }
+
+        .icon {
+            width: 120px;
+            height: 120px;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            color: #2c3e50;
+            border-left: 5px solid #0055ff;
+            padding-left: 15px;
+            margin-top: 30px;
+        }
+
+        .step {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border-left: 4px solid #f1c40f;
+        }
+
+        .pro-tip {
+            background: #e7f3ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #0055ff;
+        }
+
+        .footer {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 0.9em;
+            color: #777;
+        }
+
+        img {
+            max-width: 100%;
+        }
+
+        /* Print optimizations */
+        @media print {
+            body {
+                margin: 0;
+                padding: 0;
+                font-size: 11pt;
+            }
+
+            .header {
+                border-bottom: 1px solid #ccc;
+            }
+
+            h2 {
+                page-break-after: avoid;
+            }
+
+            .step,
+            .pro-tip {
+                border: 1px solid #ddd;
+                break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <img src="flog_icon.png" alt="FLOG Icon" class="icon">
+        <h1>FLOG</h1>
+        <p><strong>Simple GPS Golf Rangefinder for Fitbit</strong></p>
+    </div>
+
+    <p><strong>FLOG</strong> is a super simple, "no-fuss" rangefinder for your <strong>Fitbit Versa 3</strong> or
+        <strong>Fitbit Sense</strong>. It handles the distances so you can focus on your swing. It works on
+        <strong>ANY</strong> golf course in the world because you teach it where the greens are as you play!</p>
+
+    <h2>🚀 Quick Start (In 3 Simple Steps)</h2>
+
+    <div class="step">
+        <strong>1. Start a Round</strong><br>
+        On your watch, tap <strong>NEW COURSE</strong>. The watch will start looking for your location (GPS).
+    </div>
+
+    <div class="step">
+        <strong>2. "Mark" Your Greens</strong><br>
+        The first time you play a course, walk to the <strong>middle of the green</strong> on Hole 1.
+        <ul>
+            <li>Tap the red <strong>EDIT</strong> button in the top corner (this "unlocks" the marking button).</li>
+            <li>Tap the yellow <strong>MARK</strong> button.</li>
+            <li>Your watch vibrates. <strong>Done!</strong> Now the watch knows exactly where that green is.</li>
+            <li>Tap <strong>EDIT</strong> again to lock it (Back to "Play Mode").</li>
+        </ul>
+    </div>
+
+    <div class="step">
+        <strong>3. Just Play</strong><br>
+        Next time you stand on the fairway, the watch will show you exactly how many <strong>Meters</strong> (or Yards)
+        you are from the center of that green.
+    </div>
+
+    <h2>📱 How to Name Your Course</h2>
+    <p>To give your round a real name (like <em>Pebble Beach</em>):</p>
+    <ol>
+        <li>Open the <strong>Fitbit App</strong> on your phone.</li>
+        <li>Tap your <strong>Watch Icon</strong> (top left).</li>
+        <li>Tap <strong>Gallery</strong> &rarr; <strong>Flog</strong> &rarr; <strong>Settings</strong>.</li>
+        <li>Type the name in the <strong>"Course Name"</strong> box.</li>
+        <li>Your watch will update instantly!</li>
+    </ol>
+
+    <h2>🤝 How to Share with Friends</h2>
+    <p>Did you map a perfect course? Share it with your buddies!</p>
+    <ul>
+        <li>Go to the <strong>Flog Settings</strong> on your phone (see above).</li>
+        <li>Copy the long <strong>Export Code</strong> and text it to your friend.</li>
+        <li>They paste it into their <strong>"Import Code"</strong> box.</li>
+        <li>Their watch now has all your markers!</li>
+    </ul>
+
+    <div class="pro-tip">
+        <strong>💡 Pro Tips for Best Results</strong>
+        <ul>
+            <li><strong>Wait for GPS:</strong> Stand outside for 30 seconds when you first start. numbers will show
+                "---" until the watch connects.</li>
+            <li><strong>Play Mode vs Edit Mode:</strong> Keep it in <strong>Play Mode</strong> (locked) most of the time
+                to prevent accidental changes.</li>
+            <li><strong>Battery:</strong> GPS uses power. Start with at least 50% charge for a full 18 holes.</li>
+        </ul>
+    </div>
+
+    <div class="footer">
+        <p>Hit 'em straight! 🏌️‍♂️</p>
+        <p>https://github.com/kymo42/flog</p>
+    </div>
+
+</body>
+
+</html>
