@@ -51,13 +51,18 @@
   <g id="main-screen" display="none">
     <rect width="100%" height="100%" fill="black" />
     
-    <!-- GPS STATUS -->
-    <text id="txt-gps-status" x="10" y="32" fill="#aaaaaa" font-size="20">GPS: WAIT</text>
+    <!-- GPS STATUS GRAPHIC (Left Side) -->
+    <g transform="translate(10, 160)">
+      <rect id="gps-bar-1" x="0" y="30" width="8" height="10" fill="#333333" />
+      <rect id="gps-bar-2" x="12" y="20" width="8" height="20" fill="#333333" />
+      <rect id="gps-bar-3" x="24" y="10" width="8" height="30" fill="#333333" />
+      <rect id="gps-bar-4" x="36" y="0" width="8" height="40" fill="#333333" />
+    </g>
 
-    <!-- Mode Toggle Button (Edit/Lock) -->
-    <g id="btn-mode-toggle" pointer-events="all">
-      <rect id="rect-mode-bg" x="250" y="5" width="80" height="40" fill="#333333" rx="5" ry="5" />
-      <text id="txt-mode-status" x="290" y="32" fill="white" font-size="20" text-anchor="middle">EDIT</text>
+    <!-- Mode Toggle Button (Right Side) -->
+    <g id="btn-mode-toggle" pointer-events="all" transform="translate(256, 140)">
+      <rect id="rect-mode-bg" x="0" y="0" width="70" height="60" fill="#333333" rx="10" ry="10" />
+      <text id="txt-mode-status" x="35" y="38" fill="white" font-size="20" font-family="System-Bold" text-anchor="middle" pointer-events="none">EDIT</text>
     </g>
 
     <!-- HEADER: COURSE NAME -->

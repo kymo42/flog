@@ -42,18 +42,29 @@ function showScreen(screenId) {
     }
 }
 
+// GPS Bars
+const gpsBars = [
+    document.getElementById("gps-bar-1"),
+    document.getElementById("gps-bar-2"),
+    document.getElementById("gps-bar-3"),
+    document.getElementById("gps-bar-4")
+];
+
 function updateUI() {
     if (!currentCourse) return;
 
-    // GPS Status Display
-    if (txtGpsStatus) {
-        txtGpsStatus.text = `GPS: ${gps.getGPSStatus().toUpperCase()}`;
-        // Color coding for status
-        const status = gps.getGPSStatus();
-        if (status === "Excellent" || status === "Good") txtGpsStatus.style.fill = "#00ff00";
-        else if (status === "Fair") txtGpsStatus.style.fill = "#ffff00";
-        else txtGpsStatus.style.fill = "#aaaaaa";
-    }
+    // GPS Status (Graphical)
+    const status = gps.getGPSStatus();
+    const color = (status === "Excellent" || status === "Good") ? "#00ff00" : (status === "Fair" ? "#ffff00" : "#333333");
+    const activeBars = (status === "Excellent") ? 4 : (status === "Good") ? 3 : (status === "Fair") ? 2 : (status === "Poor") ? 1 : 0;
+
+    gpsBars.forEach((bar, i) => {
+        if (bar) {
+            bar.style.fill = (i < activeBars) ? color : "#333333";
+        }
+    });
+
+    // Reset display behavior to system defaults (Battery Safe)
 
     // Distance updates UI regularly
 
