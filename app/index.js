@@ -6,7 +6,8 @@ import { calculateDistance } from "./distance";
 import * as messaging from "messaging";
 import { display } from "display";
 
-console.log("Flog v4.0 - GPS Fixes");
+
+console.log("Flog v4.1 - Debugging Save");
 
 // State
 let currentCourse = null;
@@ -206,7 +207,7 @@ function setupEventListeners() {
 
         if (lastGpsPos) {
             try {
-                vibration.start("celebration");
+                vibration.start("confirmation");
                 console.log(`MARK: Saving ${lastGpsPos.latitude}, ${lastGpsPos.longitude} for Hole ${currentHole}`);
 
                 storage.updateHole(currentCourse.id, currentHole, {
