@@ -35,12 +35,10 @@ function showScreen(screenId) {
         if (el) el.style.display = (s === screenId) ? "inline" : "none";
     });
 
-    // Control screen power
+    // Reset display behavior to system defaults (Battery Safe)
+    display.autoOff = true;
     if (screenId === "main-screen" || screenId === "mark-screen") {
-        display.autoOff = false;
-        display.on = true;
-    } else {
-        display.autoOff = true;
+        display.on = true; // Just wake it up initially
     }
 }
 
@@ -57,9 +55,7 @@ function updateUI() {
         else txtGpsStatus.style.fill = "#aaaaaa";
     }
 
-    // Keep screen awake while in main round view
-    display.on = true;
-    display.autoOff = false;
+    // Distance updates UI regularly
 
     // Mode handling
     if (isSetupMode) {
