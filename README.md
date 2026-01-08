@@ -59,6 +59,16 @@ You can choose your units in the phone settings:
 
 ---
 
+## ⌚ Device Compatibility
+**FLOG** is built specifically for the following Fitbit models:
+*   ✅ **Fitbit Versa 3**
+*   ✅ **Fitbit Sense**
+
+> [!CAUTION]
+> **Other Models**: This app will **not** work on older models (Versa 1, 2, or Lite) or the newer Google-era watches (Versa 4 or Sense 2) due to Fitbit software limitations.
+
+---
+
 ## 🛠 Installation for Techies
 If you are installing this manually:
 1. `npm install`
