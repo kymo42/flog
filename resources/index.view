@@ -75,7 +75,7 @@
     
     <!-- BIG DISTANCE DISPLAY -->
     <text id="txt-distance" x="50%" y="175" fill="white" font-size="110" font-family="System-Bold" text-anchor="middle">---</text>
-    <text id="txt-unit" x="50%" y="215" fill="#00ff00" font-size="24" text-anchor="middle">METERS TO CENTER</text>
+    <text id="txt-unit" x="50%" y="215" fill="white" font-size="24" text-anchor="middle">METERS</text>
 
     <!-- UI Divider -->
     <rect x="10%" y="238" width="80%" height="1" fill="#333333" />

@@ -88,7 +88,7 @@ function updateUI() {
     txtHoleNum.text = `HOLE ${currentHole}`;
 
     // Unit label
-    txtUnit.text = settings.useYards ? "YARDS TO CENTER" : "METERS TO CENTER";
+    txtUnit.text = settings.useYards ? "YARDS" : "METERS";
 
     // Distance
     if (lastGpsPos) {
