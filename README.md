@@ -1,3 +1,5 @@
+![FLOG Icon](flog_icon.png)
+
 # ⛳ FLOG - Simple Golf Rangefinder
 
 **FLOG** is a super simple, "no-fuss" rangefinder for your **Fitbit Versa 3** or **Fitbit Sense**. 
@@ -54,7 +56,6 @@ You can choose your units in the phone settings:
 *   **Wait for GPS**: When you first start, stand outside for 30 seconds. The numbers will show "---" until the watch finds the satellites.
 *   **Play Mode vs Edit Mode**: Most of the time, keep it in **Play Mode** (locked). This prevents you from accidentally moving a hole marker if you bump your watch.
 *   **Battery**: GPS uses a lot of battery. Make sure your watch has at least 50% charge before you start 18 holes.
-*   **Saving**: You don't need to click "Save". Every time you **MARK** a hole, it is saved forever on your watch.
 
 ---
 
@@ -68,4 +69,4 @@ If you are installing this manually:
 
 **Hit 'em straight! 🏌️‍♂️**
 
-[Open Source GitHub Project](https://github.com/kymo42/fine-parking-app)
+[Open Source GitHub Project](https://github.com/kymo42/flog)
