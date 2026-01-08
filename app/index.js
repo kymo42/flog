@@ -5,7 +5,7 @@ import * as storage from "./storage";
 import { calculateDistance } from "./distance";
 import * as messaging from "messaging";
 
-console.log("Flog v3.8 - Mode Safety Update");
+console.log("Flog v3.9 - Navigation & GPS Fix");
 
 // State
 let currentCourse = null;
@@ -15,12 +15,13 @@ let settings = storage.loadSettings();
 let isSetupMode = false;
 
 // UI Elements
-const screens = ["start-screen", "list-screen", "main-screen", "mark-screen"];
+const screens = ["start-screen", "list-screen", "main-screen", "mark-screen", "hole-select-screen"];
 const txtDistance = document.getElementById("txt-distance");
 const txtHoleNum = document.getElementById("txt-hole-num");
 const txtUnit = document.getElementById("txt-unit");
 const txtMainTitle = document.getElementById("txt-main-title");
 const txtModeStatus = document.getElementById("txt-mode-status");
+const rectModeBg = document.getElementById("rect-mode-bg");
 const btnMark = document.getElementById("btn-mark");
 const btnModeToggle = document.getElementById("btn-mode-toggle");
 const btnLockedIndicator = document.getElementById("btn-locked-indicator");
@@ -41,12 +42,12 @@ function updateUI() {
         btnMark.style.display = "inline";
         btnLockedIndicator.style.display = "none";
         txtModeStatus.text = "DONE";
-        txtModeStatus.parent.getElementById("rect").style.fill = "#aa0000"; // Red for editing
+        if (rectModeBg) rectModeBg.style.fill = "#aa0000"; // Red for editing
     } else {
         btnMark.style.display = "none";
         btnLockedIndicator.style.display = "inline";
         txtModeStatus.text = "EDIT";
-        txtModeStatus.parent.getElementById("rect").style.fill = "#333333";
+        if (rectModeBg) rectModeBg.style.fill = "#333333";
     }
 
     // Course Name Header
@@ -96,7 +97,7 @@ function updateCourseList() {
             btn.onclick = () => {
                 currentCourse = list[i];
                 currentHole = 1;
-                isSetupMode = false; // Initial Play Mode for saved courses
+                isSetupMode = false;
                 showScreen("main-screen");
                 updateUI();
                 syncCourseToPhone();
@@ -113,7 +114,7 @@ function setupEventListeners() {
         vibration.start("bump");
         currentCourse = storage.createCourse(`New Round ${new Date().getHours()}:${new Date().getMinutes()}`);
         currentHole = 1;
-        isSetupMode = true; // Auto Setup for new course
+        isSetupMode = true;
         showScreen("main-screen");
         updateUI();
         syncCourseToPhone();
@@ -135,13 +136,37 @@ function setupEventListeners() {
         updateUI();
     };
 
+    document.getElementById("btn-hole-jump").onclick = () => {
+        vibration.start("bump");
+        showScreen("hole-select-screen");
+    };
+
     document.getElementById("btn-prev-hole").onclick = () => {
         if (currentHole > 1) { currentHole--; vibration.start("bump"); updateUI(); }
     };
     document.getElementById("btn-next-hole").onclick = () => {
         if (currentHole < 18) { currentHole++; vibration.start("bump"); updateUI(); }
     };
-    document.getElementById("btn-mark").onclick = () => { showScreen("mark-screen"); };
+    document.getElementById("btn-mark").onclick = () => {
+        // Reset Mark Screen Text
+        document.getElementById("txt-mark-prompt").text = "Mark Green Location?";
+        document.getElementById("txt-mark-confirm-btn").text = "YES, SET HERE";
+        showScreen("mark-screen");
+    };
+
+    // HOLE SELECT
+    document.getElementById("btn-hole-select-back").onclick = () => showScreen("main-screen");
+    for (let i = 0; i < 18; i++) {
+        const btn = document.getElementById(`hole-grid-${i}`);
+        if (btn) {
+            btn.onclick = () => {
+                currentHole = i + 1;
+                vibration.start("bump");
+                showScreen("main-screen");
+                updateUI();
+            };
+        }
+    }
 
     // MARK
     document.getElementById("btn-mark-confirm").onclick = () => {
@@ -155,6 +180,11 @@ function setupEventListeners() {
             showScreen("main-screen");
             updateUI();
             syncCourseToPhone();
+        } else {
+            console.warn("Mark attempted without GPS lock");
+            vibration.start("nudge");
+            document.getElementById("txt-mark-prompt").text = "NO GPS SIGNAL";
+            document.getElementById("txt-mark-confirm-btn").text = "WAITING...";
         }
     };
     document.getElementById("btn-mark-cancel").onclick = () => showScreen("main-screen");

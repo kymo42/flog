@@ -13,14 +13,18 @@ It handles the distances so you can focus on your swing. It works on **ANY** gol
 ### 1. Start a Round
 On your watch, tap **NEW COURSE**. The watch will start looking for your location (GPS).
 
-### 2. "Mark" Your Greens
-The first time you play a course, walk to the **middle of the green** on Hole 1. 
+### 2. Jump to Any Hole
+Tapping the **"HOLE X"** text on the main screen opens a grid of 18 holes. You can jump to any hole instantly to mark it or see its distance.
+
+### 3. "Mark" Your Greens
+The first time you play a course, walk to the **middle of the green** on any hole. 
 1. Tap the red **EDIT** button in the top corner (this "unlocks" the marking button).
 2. Tap the yellow **MARK** button.
-3. Your watch vibrates. **Done!** Now the watch knows exactly where that green is. 
-4. Tap **EDIT** again to lock it (Back to "Play Mode").
+3. Tap **YES, SET HERE**. (If it says "WAITING...", it just needs a better GPS signal).
+4. Your watch vibrates. **Done!**
+5. Tap **EDIT** again to lock it.
 
-### 3. Just Play
+### 4. Just Play
 Next time you stand on the fairway, the watch will show you exactly how many **Meters** (or Yards) you are from the center of that green. 
 
 ---

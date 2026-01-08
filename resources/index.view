@@ -53,13 +53,17 @@
     
     <!-- Mode Toggle Button (Edit/Lock) -->
     <g id="btn-mode-toggle" pointer-events="all">
-      <rect x="250" y="5" width="80" height="40" fill="#333333" rx="5" ry="5" />
+      <rect id="rect-mode-bg" x="250" y="5" width="80" height="40" fill="#333333" rx="5" ry="5" />
       <text id="txt-mode-status" x="290" y="32" fill="white" font-size="20" text-anchor="middle">EDIT</text>
     </g>
 
     <!-- HEADER: COURSE NAME -->
     <text id="txt-main-title" x="50%" y="35" fill="white" font-size="24" font-family="System-Bold" text-anchor="middle">COURSE NAME</text>
-    <text id="txt-hole-num" x="50%" y="65" fill="#aaaaaa" font-size="24" text-anchor="middle">HOLE 1</text>
+    
+    <!-- HOLE NUMBER (Clickable for jump) -->
+    <g id="btn-hole-jump" pointer-events="all">
+      <text id="txt-hole-num" x="50%" y="65" fill="#aaaaaa" font-size="24" text-anchor="middle">HOLE 1</text>
+    </g>
     
     <!-- BIG DISTANCE DISPLAY -->
     <text id="txt-distance" x="50%" y="175" fill="white" font-size="110" font-family="System-Bold" text-anchor="middle">---</text>
@@ -74,13 +78,13 @@
       <text x="50" y="295" fill="white" font-size="40" text-anchor="middle">&lt;</text>
     </g>
 
-    <!-- MARK BUTTON (Now Dynamic) -->
+    <!-- MARK BUTTON -->
     <g id="btn-mark" pointer-events="all" display="none">
       <rect x="100" y="250" width="136" height="70" fill="#ffcc00" rx="10" ry="10" />
       <text x="168" y="295" fill="black" font-size="28" font-family="System-Bold" text-anchor="middle">MARK</text>
     </g>
 
-    <!-- LOCKED INDICATOR (Shown instead of Mark when locked) -->
+    <!-- LOCKED INDICATOR -->
     <g id="btn-locked-indicator" pointer-events="all">
       <rect x="100" y="250" width="136" height="70" fill="#111111" rx="10" ry="10" />
       <text x="168" y="293" fill="#444444" font-size="20" text-anchor="middle">PLAY MODE</text>
@@ -93,15 +97,57 @@
   </g>
 
   <!-- ========================================================== -->
+  <!-- HOLE SELECT SCREEN (Non-linear Jump)                        -->
+  <!-- ========================================================== -->
+  <g id="hole-select-screen" display="none">
+    <rect width="100%" height="100%" fill="black" />
+    <text x="50%" y="40" fill="#aaaaaa" font-size="24" text-anchor="middle">JUMP TO HOLE</text>
+    
+    <!-- This is a simplified 6x3 grid for 18 holes -->
+    <g transform="translate(18, 60)">
+      <!-- Row 1: 1-6 -->
+      <g id="hole-grid-0" pointer-events="all"><rect width="45" height="45" fill="#222222" rx="5" ry="5"/><text x="22" y="32" fill="white" font-size="20" text-anchor="middle">1</text></g>
+      <g id="hole-grid-1" transform="translate(50,0)" pointer-events="all"><rect width="45" height="45" fill="#222222" rx="5" ry="5"/><text x="22" y="32" fill="white" font-size="20" text-anchor="middle">2</text></g>
+      <g id="hole-grid-2" transform="translate(100,0)" pointer-events="all"><rect width="45" height="45" fill="#222222" rx="5" ry="5"/><text x="22" y="32" fill="white" font-size="20" text-anchor="middle">3</text></g>
+      <g id="hole-grid-3" transform="translate(150,0)" pointer-events="all"><rect width="45" height="45" fill="#222222" rx="5" ry="5"/><text x="22" y="32" fill="white" font-size="20" text-anchor="middle">4</text></g>
+      <g id="hole-grid-4" transform="translate(200,0)" pointer-events="all"><rect width="45" height="45" fill="#222222" rx="5" ry="5"/><text x="22" y="32" fill="white" font-size="20" text-anchor="middle">5</text></g>
+      <g id="hole-grid-5" transform="translate(250,0)" pointer-events="all"><rect width="45" height="45" fill="#222222" rx="5" ry="5"/><text x="22" y="32" fill="white" font-size="20" text-anchor="middle">6</text></g>
+      
+      <!-- Row 2: 7-12 -->
+      <g id="hole-grid-6" transform="translate(0,55)" pointer-events="all"><rect width="45" height="45" fill="#222222" rx="5" ry="5"/><text x="22" y="32" fill="white" font-size="20" text-anchor="middle">7</text></g>
+      <g id="hole-grid-7" transform="translate(50,55)" pointer-events="all"><rect width="45" height="45" fill="#222222" rx="5" ry="5"/><text x="22" y="32" fill="white" font-size="20" text-anchor="middle">8</text></g>
+      <g id="hole-grid-8" transform="translate(100,55)" pointer-events="all"><rect width="45" height="45" fill="#222222" rx="5" ry="5"/><text x="22" y="32" fill="white" font-size="20" text-anchor="middle">9</text></g>
+      <g id="hole-grid-9" transform="translate(150,55)" pointer-events="all"><rect width="45" height="45" fill="#222222" rx="5" ry="5"/><text x="22" y="32" fill="white" font-size="20" text-anchor="middle">10</text></g>
+      <g id="hole-grid-10" transform="translate(200,55)" pointer-events="all"><rect width="45" height="45" fill="#222222" rx="5" ry="5"/><text x="22" y="32" fill="white" font-size="20" text-anchor="middle">11</text></g>
+      <g id="hole-grid-11" transform="translate(250,55)" pointer-events="all"><rect width="45" height="45" fill="#222222" rx="5" ry="5"/><text x="22" y="32" fill="white" font-size="20" text-anchor="middle">12</text></g>
+
+      <!-- Row 3: 13-18 -->
+      <g id="hole-grid-12" transform="translate(0,110)" pointer-events="all"><rect width="45" height="45" fill="#222222" rx="5" ry="5"/><text x="22" y="32" fill="white" font-size="20" text-anchor="middle">13</text></g>
+      <g id="hole-grid-13" transform="translate(50,110)" pointer-events="all"><rect width="45" height="45" fill="#222222" rx="5" ry="5"/><text x="22" y="32" fill="white" font-size="20" text-anchor="middle">14</text></g>
+      <g id="hole-grid-14" transform="translate(100,110)" pointer-events="all"><rect width="45" height="45" fill="#222222" rx="5" ry="5"/><text x="22" y="32" fill="white" font-size="20" text-anchor="middle">15</text></g>
+      <g id="hole-grid-15" transform="translate(150,110)" pointer-events="all"><rect width="45" height="45" fill="#222222" rx="5" ry="5"/><text x="22" y="32" fill="white" font-size="20" text-anchor="middle">16</text></g>
+      <g id="hole-grid-16" transform="translate(200,110)" pointer-events="all"><rect width="45" height="45" fill="#222222" rx="5" ry="5"/><text x="22" y="32" fill="white" font-size="20" text-anchor="middle">17</text></g>
+      <g id="hole-grid-17" transform="translate(250,110)" pointer-events="all"><rect width="45" height="45" fill="#222222" rx="5" ry="5"/><text x="22" y="32" fill="white" font-size="20" text-anchor="middle">18</text></g>
+    </g>
+
+    <g id="btn-hole-select-back" pointer-events="all">
+      <rect x="28" y="270" width="280" height="50" fill="#444444" rx="10" ry="10" />
+      <text x="50%" y="305" fill="white" font-size="24" text-anchor="middle">CANCEL</text>
+    </g>
+  </g>
+
+  <!-- ========================================================== -->
   <!-- MARK SCREEN                                                -->
   <!-- ========================================================== -->
   <g id="mark-screen" display="none">
     <rect width="100%" height="100%" fill="#111111" />
-    <text x="50%" y="70" fill="white" font-size="30" text-anchor="middle">Mark Green Location?</text>
+    <text id="txt-mark-prompt" x="50%" y="70" fill="white" font-size="30" text-anchor="middle">Mark Green Location?</text>
+    
     <g id="btn-mark-confirm" pointer-events="all">
       <rect x="10%" y="110" width="80%" height="80" fill="#00aa00" rx="15" ry="15" />
-      <text x="50%" y="160" fill="white" font-size="34" font-family="System-Bold" text-anchor="middle">YES, SET HERE</text>
+      <text id="txt-mark-confirm-btn" x="50%" y="160" fill="white" font-size="34" font-family="System-Bold" text-anchor="middle">YES, SET HERE</text>
     </g>
+
     <g id="btn-mark-cancel" pointer-events="all">
       <rect x="10%" y="210" width="80%" height="80" fill="#aa0000" rx="15" ry="15" />
       <text x="50%" y="260" fill="white" font-size="34" font-family="System-Bold" text-anchor="middle">CANCEL</text>
