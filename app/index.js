@@ -190,16 +190,29 @@ function setupEventListeners() {
 
     // MARK
     document.getElementById("btn-mark-confirm").onclick = () => {
+        console.log("MARK: Button Clicked");
+        console.log(`MARK: GPS Lock: ${lastGpsPos ? 'YES' : 'NO'}`);
+
         if (lastGpsPos) {
-            vibration.start("celebration");
-            storage.updateHole(currentCourse.id, currentHole, {
-                latitude: lastGpsPos.latitude,
-                longitude: lastGpsPos.longitude
-            });
-            currentCourse = storage.loadCourse(currentCourse.id);
-            showScreen("main-screen");
-            updateUI();
-            syncCourseToPhone();
+            try {
+                vibration.start("celebration");
+                console.log(`MARK: Saving ${lastGpsPos.latitude}, ${lastGpsPos.longitude} for Hole ${currentHole}`);
+
+                storage.updateHole(currentCourse.id, currentHole, {
+                    latitude: lastGpsPos.latitude,
+                    longitude: lastGpsPos.longitude
+                });
+
+                console.log("MARK: Save success, reloading course");
+                currentCourse = storage.loadCourse(currentCourse.id);
+
+                showScreen("main-screen");
+                updateUI();
+                syncCourseToPhone();
+            } catch (err) {
+                console.error("MARK: Error saving:", err);
+                document.getElementById("txt-mark-prompt").text = "SAVE ERROR";
+            }
         } else {
             console.warn("Mark attempted without GPS lock");
             vibration.start("nudge");

@@ -84,7 +84,7 @@
     <!-- MARK BUTTON -->
     <g id="btn-mark" pointer-events="all" display="none">
       <rect x="100" y="250" width="136" height="70" fill="#ffcc00" rx="10" ry="10" />
-      <text x="168" y="295" fill="black" font-size="28" font-family="System-Bold" text-anchor="middle">MARK</text>
+      <text x="168" y="295" fill="black" font-size="28" font-family="System-Bold" text-anchor="middle" pointer-events="none">MARK</text>
     </g>
 
     <!-- LOCKED INDICATOR -->
@@ -148,7 +148,7 @@
     
     <g id="btn-mark-confirm" pointer-events="all">
       <rect x="10%" y="110" width="80%" height="80" fill="#00aa00" rx="15" ry="15" />
-      <text id="txt-mark-confirm-btn" x="50%" y="160" fill="white" font-size="34" font-family="System-Bold" text-anchor="middle">YES, SET HERE</text>
+      <text id="txt-mark-confirm-btn" x="50%" y="160" fill="white" font-size="34" font-family="System-Bold" text-anchor="middle" pointer-events="none">YES, SET HERE</text>
     </g>
 
     <g id="btn-mark-cancel" pointer-events="all">
