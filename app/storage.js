@@ -168,8 +168,6 @@ export function loadCourse(id) {
  */
 export function updateHole(courseId, holeNumber, data) {
     try {
-        console.log("STORAGE: updateHole start", courseId, holeNumber);
-
         // 1. Load
         let courses;
         try {
@@ -217,7 +215,6 @@ export function updateHole(courseId, holeNumber, data) {
                     };
 
                     // 5. Save
-                    console.log("STORAGE: About to saveCourses");
                     saveCourses(courses);
                 }
             } catch (e) {
@@ -225,11 +222,12 @@ export function updateHole(courseId, holeNumber, data) {
                 throw e;
             }
         } else {
-            console.warn("STORAGE: Course not found for update");
+            // Course not found, no action needed
         }
     } catch (outerErr) {
         console.error("STORAGE: Outer Error", outerErr);
         throw outerErr; // Ensure it bubbles up to main handler
     }
+
 }
 

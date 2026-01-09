@@ -211,13 +211,10 @@ function setupEventListeners() {
                 if (vibration) vibration.start("confirmation");
             } catch (e) {
                 console.error("VIB ERR", e);
-                document.getElementById("txt-mark-prompt").text = "ERR: VIB";
-                return;
             }
 
             // 2. Storage
             try {
-                console.log(`MARK: Saving ${lastGpsPos.latitude}, ${lastGpsPos.longitude}`);
                 storage.updateHole(currentCourse.id, currentHole, {
                     latitude: lastGpsPos.latitude,
                     longitude: lastGpsPos.longitude
@@ -225,8 +222,7 @@ function setupEventListeners() {
                 currentCourse = storage.loadCourse(currentCourse.id);
             } catch (e) {
                 console.error("STORE ERR", e);
-                const msg = e.message ? e.message.substring(0, 10) : "STORE";
-                document.getElementById("txt-mark-prompt").text = "E:" + msg;
+                document.getElementById("txt-mark-prompt").text = "SAVE FAILED";
                 return;
             }
 
@@ -237,7 +233,6 @@ function setupEventListeners() {
                 syncCourseToPhone();
             } catch (e) {
                 console.error("SYNC ERR", e);
-                document.getElementById("txt-mark-prompt").text = "ERR: SYNC";
             }
         } else {
             console.warn("Mark attempted without GPS lock");
