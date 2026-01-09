@@ -151,7 +151,13 @@ export function createHole(number) {
  */
 export function loadCourse(id) {
     const courses = loadCourses();
-    return courses.find(c => c.id === id) || null;
+    // return courses.find(c => c.id === id) || null;
+    for (let i = 0; i < courses.length; i++) {
+        if (courses[i].id === id) {
+            return courses[i];
+        }
+    }
+    return null;
 }
 
 /**

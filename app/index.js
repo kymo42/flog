@@ -225,7 +225,8 @@ function setupEventListeners() {
                 currentCourse = storage.loadCourse(currentCourse.id);
             } catch (e) {
                 console.error("STORE ERR", e);
-                document.getElementById("txt-mark-prompt").text = "ERR: STORE";
+                const msg = e.message ? e.message.substring(0, 10) : "STORE";
+                document.getElementById("txt-mark-prompt").text = "E:" + msg;
                 return;
             }
 
