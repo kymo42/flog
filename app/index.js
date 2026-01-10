@@ -167,9 +167,8 @@ function updateCourseList() {
             // Delete Handler
             if (delBtn) {
                 delBtn.onclick = () => {
-                    vibration.start("confirmation"); // Reusing confirmation since it's valid
-                    const newList = list.filter((_, index) => index !== i);
-                    storage.saveCourses(newList);
+                    vibration.start("confirmation");
+                    storage.deleteCourse(list[i].id);
                     updateCourseList(); // Refresh
                 };
             }
@@ -246,16 +245,12 @@ function setupEventListeners() {
     // DELETE COURSE (Main Screen)
     document.getElementById("btn-delete-course").onclick = () => {
         vibration.start("confirmation");
-        // Delete
-        const courses = storage.loadCourses();
-        const newCourses = courses.filter(c => c.id !== currentCourse.id);
-        storage.saveCourses(newCourses);
+        storage.deleteCourse(currentCourse.id);
 
         // Exit
         currentCourse = null;
         isSetupMode = false;
         showScreen("start-screen");
-        // Update list buttons next time
     };
 
     // MARK
