@@ -92,13 +92,16 @@ function updateUI() {
     // Distance updates UI regularly
 
     // Mode handling
+    const btnDelete = document.getElementById("btn-delete-course");
     if (isSetupMode) {
         btnMark.style.display = "inline";
+        if (btnDelete) btnDelete.style.display = "inline";
         btnLockedIndicator.style.display = "none";
         txtModeStatus.text = "DONE";
         if (rectModeBg) rectModeBg.style.fill = "#aa0000"; // Red for editing
     } else {
         btnMark.style.display = "none";
+        if (btnDelete) btnDelete.style.display = "none";
         btnLockedIndicator.style.display = "inline";
         txtModeStatus.text = "EDIT";
         if (rectModeBg) rectModeBg.style.fill = "#333333";
@@ -220,7 +223,40 @@ function setupEventListeners() {
         showScreen("mark-screen");
     };
 
-    // Grid Removed
+
+    // SWIPE TO EXIT (Right Swipe on Main Screen)
+    let touchStartX = 0;
+    rectModeBg.onmousedown = (evt) => {
+        touchStartX = evt.screenX;
+    };
+    rectModeBg.onmouseup = (evt) => {
+        if (evt.screenX - touchStartX > 100) {
+            // Swipe Right Detected -> Exit
+            vibration.start("nudge");
+            // Save before exit
+            if (currentCourse) {
+                // Save state if needed, but we already save on edit
+                isSetupMode = false;
+                updateUI(); // Reset UI state
+                showScreen("start-screen");
+            }
+        }
+    };
+
+    // DELETE COURSE (Main Screen)
+    document.getElementById("btn-delete-course").onclick = () => {
+        vibration.start("confirmation");
+        // Delete
+        const courses = storage.loadCourses();
+        const newCourses = courses.filter(c => c.id !== currentCourse.id);
+        storage.saveCourses(newCourses);
+
+        // Exit
+        currentCourse = null;
+        isSetupMode = false;
+        showScreen("start-screen");
+        // Update list buttons next time
+    };
 
     // MARK
     document.getElementById("btn-mark-confirm").onclick = () => {
@@ -272,14 +308,21 @@ messaging.peerSocket.onmessage = (evt) => {
     if (d.key === "courseName" && currentCourse) {
         currentCourse.name = d.newValue;
         const courses = storage.loadCourses();
-        const idx = courses.findIndex(c => c.id === currentCourse.id);
+        let idx = -1;
+        for (let i = 0; i < courses.length; i++) {
+            if (courses[i].id === currentCourse.id) {
+                idx = i;
+                break;
+            }
+        }
         if (idx !== -1) {
             courses[idx].name = currentCourse.name;
             storage.saveCourses(courses);
         }
         updateUI();
         syncCourseToPhone();
-        vibration.start("nudge");
+        if (vibration) vibration.start("confirmation");
+        console.log(`UI: Course renamed to ${d.newValue}`);
     } else if (d.key === "useYards") {
         settings.useYards = d.newValue;
         storage.saveSettings(settings);
