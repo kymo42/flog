@@ -231,3 +231,17 @@ export function updateHole(courseId, holeNumber, data) {
 
 }
 
+
+/**
+ * Delete a course by its ID
+ * @param {string} courseId - The ID of the course to delete
+ */
+export function deleteCourse(courseId) {
+    try {
+        const courses = loadCourses();
+        const updatedCourses = courses.filter(course => course.id !== courseId);
+        saveCourses(updatedCourses);
+    } catch (error) {
+        console.error("Error deleting course:", error);
+    }
+}
