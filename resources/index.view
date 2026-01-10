@@ -26,34 +26,23 @@
     <rect width="100%" height="100%" fill="black" />
     <text x="50%" y="40" fill="#aaaaaa" font-size="24" text-anchor="middle">SELECT COURSE</text>
     
-    <!-- Mode Toggle Button (Right Side) -->
-    <use id="btn-mode-toggle" href="#square-button-icon" y="140" x="256" width="80" height="80" fill="#444444">
-      <set href="#text" attributeName="text-buffer" to="EDIT" />
-      <set href="#text" attributeName="id" to="txt-mode-status" />
-    </use>
-
-    <!-- Delete Course Button (Visible only in Setup Mode) -->
-    <use id="btn-delete-course" href="#square-button" y="270" x="50" width="236" fill="red" display="none">
-        <set href="#text" attributeName="text-buffer" to="DELETE COURSE" />
-    </use>
-
     <!-- Course 1 -->
-    <use id="btn-course-0" href="#square-button" y="80" x="10" width="316" display="none">
-        <set href="#text" attributeName="text-buffer" to="Course 1" />
-        <set href="#text" attributeName="id" to="txt-course-0" />
-    </use>
+    <g id="btn-course-0" pointer-events="all" display="none">
+        <rect x="10" y="60" width="316" height="60" fill="#222222" rx="10" ry="10" />
+        <text id="txt-course-0" x="50%" y="100" fill="white" font-size="24" text-anchor="middle">---</text>
+    </g>
 
     <!-- Course 2 -->
-    <use id="btn-course-1" href="#square-button" y="155" x="10" width="316" display="none">
-        <set href="#text" attributeName="text-buffer" to="Course 2" />
-        <set href="#text" attributeName="id" to="txt-course-1" />
-    </use>
+    <g id="btn-course-1" pointer-events="all" display="none">
+        <rect x="10" y="130" width="316" height="60" fill="#222222" rx="10" ry="10" />
+        <text id="txt-course-1" x="50%" y="170" fill="white" font-size="24" text-anchor="middle">---</text>
+    </g>
 
     <!-- Course 3 -->
-    <use id="btn-course-2" href="#square-button" y="230" x="10" width="316" display="none">
-        <set href="#text" attributeName="text-buffer" to="Course 3" />
-        <set href="#text" attributeName="id" to="txt-course-2" />
-    </use>
+    <g id="btn-course-2" pointer-events="all" display="none">
+        <rect x="10" y="200" width="316" height="60" fill="#222222" rx="10" ry="10" />
+        <text id="txt-course-2" x="50%" y="240" fill="white" font-size="24" text-anchor="middle">---</text>
+    </g>
 
     <g id="btn-list-back" pointer-events="all">
       <rect x="28" y="270" width="280" height="50" fill="#444444" rx="10" ry="10" />
