@@ -12,7 +12,9 @@ messaging.peerSocket.onmessage = (evt) => {
         const json = JSON.stringify(d.data);
         const code = btoa(json); // Simple Base64
         settingsStorage.setItem("courseExportCode", code);
-        settingsStorage.setItem("courseName", JSON.stringify(d.data.name));
+    } else if (d.type === "sync-courses") {
+        console.log("Syncing courses to phone");
+        settingsStorage.setItem("courseList", JSON.stringify(d.data));
     }
 };
 

@@ -1,4 +1,16 @@
 /* CSS reset for debugging */
 text {
   font-family: System-Regular;
+  font-size: 16px;
+  /* Default text size */
+}
+
+#txt-distance {
+  font-size: 24px;
+  /* Same size as hole number */
+}
+
+#txt-hole-num {
+  font-size: 24px;
+  /* Same size as distance */
 }

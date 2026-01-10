@@ -26,22 +26,29 @@
     <rect width="100%" height="100%" fill="black" />
     <text x="50%" y="40" fill="#aaaaaa" font-size="24" text-anchor="middle">SELECT COURSE</text>
     
-    <!-- Course 1 -->
     <g id="btn-course-0" pointer-events="all" display="none">
-        <rect x="10" y="60" width="316" height="60" fill="#222222" rx="10" ry="10" />
-        <text id="txt-course-0" x="50%" y="100" fill="white" font-size="24" text-anchor="middle">---</text>
+      <rect x="10" y="60" width="270" height="60" fill="#222222" rx="10" ry="10" />
+      <text id="txt-course-0" x="145" y="100" fill="white" font-size="24" text-anchor="middle">---</text>
+      <g id="btn-delete-0" pointer-events="all">
+        <rect x="290" y="70" width="30" height="40" fill="#aa0000" rx="5" ry="5" />
+        <text x="305" y="97" fill="white" font-size="24" text-anchor="middle">X</text>
+      </g>
     </g>
-
-    <!-- Course 2 -->
     <g id="btn-course-1" pointer-events="all" display="none">
-        <rect x="10" y="130" width="316" height="60" fill="#222222" rx="10" ry="10" />
-        <text id="txt-course-1" x="50%" y="170" fill="white" font-size="24" text-anchor="middle">---</text>
+      <rect x="10" y="130" width="270" height="60" fill="#222222" rx="10" ry="10" />
+      <text id="txt-course-1" x="145" y="170" fill="white" font-size="24" text-anchor="middle">---</text>
+      <g id="btn-delete-1" pointer-events="all">
+        <rect x="290" y="140" width="30" height="40" fill="#aa0000" rx="5" ry="5" />
+        <text x="305" y="167" fill="white" font-size="24" text-anchor="middle">X</text>
+      </g>
     </g>
-
-    <!-- Course 3 -->
     <g id="btn-course-2" pointer-events="all" display="none">
-        <rect x="10" y="200" width="316" height="60" fill="#222222" rx="10" ry="10" />
-        <text id="txt-course-2" x="50%" y="240" fill="white" font-size="24" text-anchor="middle">---</text>
+      <rect x="10" y="200" width="270" height="60" fill="#222222" rx="10" ry="10" />
+      <text id="txt-course-2" x="145" y="240" fill="white" font-size="24" text-anchor="middle">---</text>
+      <g id="btn-delete-2" pointer-events="all">
+        <rect x="290" y="210" width="30" height="40" fill="#aa0000" rx="5" ry="5" />
+        <text x="305" y="237" fill="white" font-size="24" text-anchor="middle">X</text>
+      </g>
     </g>
 
     <g id="btn-list-back" pointer-events="all">
@@ -54,7 +61,7 @@
   <!-- MAIN SCREEN (Active Round)                                 -->
   <!-- ========================================================== -->
   <g id="main-screen" display="none">
-    <rect id="rect-mode-bg" width="100%" height="100%" fill="#333333" pointer-events="all" />
+    <rect width="100%" height="100%" fill="black" />
     
     <!-- GPS STATUS GRAPHIC (Left Side) -->
     <g transform="translate(10, 160)">
@@ -101,12 +108,6 @@
     <g id="btn-locked-indicator" pointer-events="all">
       <rect x="100" y="250" width="136" height="70" fill="#111111" rx="10" ry="10" />
       <text x="168" y="293" fill="#444444" font-size="20" text-anchor="middle">PLAY MODE</text>
-    </g>
-
-    <!-- DELETE COURSE BUTTON (Only visible in Setup Mode) -->
-    <g id="btn-delete-course" pointer-events="all" display="none">
-        <rect x="28" y="270" width="280" height="50" fill="red" rx="10" ry="10" />
-        <text x="168" y="305" fill="white" font-size="24" fontFamily="System-Bold" text-anchor="middle">DELETE COURSE</text>
     </g>
 
     <g id="btn-next-hole" pointer-events="all">

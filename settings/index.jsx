@@ -1,12 +1,36 @@
 function settingsComponent(props) {
+    const courseList = props.settingsStorage.getItem("courseList");
+    let courses = [];
+    if (courseList) {
+        try {
+            courses = JSON.parse(courseList);
+        } catch (e) {
+            console.error("Failed to parse courseList");
+        }
+    }
+
     return (
         <Page>
             <Section
-                title="Active Course">
-                <TextInput
-                    label="Course Name"
-                    settingsKey="courseName"
-                />
+                title="Course Management">
+                {courses.map((course, index) => (
+                    <Section key={course.id} title={`Course ${index + 1}`}>
+                        <TextInput
+                            label="Name"
+                            value={course.name}
+                            onChange={(value) => {
+                                // Send rename
+                                props.settingsStorage.setItem("renameCourse", JSON.stringify({ id: course.id, name: value }));
+                            }}
+                        />
+                        <Button
+                            label="Delete"
+                            onClick={() => {
+                                props.settingsStorage.setItem("deleteCourse", course.id);
+                            }}
+                        />
+                    </Section>
+                ))}
             </Section>
 
             <Section

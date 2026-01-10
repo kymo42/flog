@@ -5,12 +5,9 @@ import * as storage from "./storage";
 import { calculateDistance } from "./distance";
 import * as messaging from "messaging";
 import { display } from "display";
-import { me as appbit } from "appbit";
 
-// Keep App Alive (No Timeout)
-appbit.appTimeoutEnabled = false;
 
-console.log("Flog v5.0 - Battery Saver & Usability");
+console.log("Flog v4.1 - Debugging Save");
 
 // State
 let currentCourse = null;
@@ -20,36 +17,17 @@ let settings = storage.loadSettings();
 let isSetupMode = false;
 
 // UI Elements
-const screens = ["start-screen", "list-screen", "main-screen", "mark-screen"]; // Removed hole-select-screen
+const screens = ["start-screen", "list-screen", "main-screen", "mark-screen", "hole-select-screen"];
 const txtDistance = document.getElementById("txt-distance");
 const txtHoleNum = document.getElementById("txt-hole-num");
 const txtUnit = document.getElementById("txt-unit");
 const txtMainTitle = document.getElementById("txt-main-title");
 const txtModeStatus = document.getElementById("txt-mode-status");
+const txtGpsStatus = document.getElementById("txt-gps-status");
 const rectModeBg = document.getElementById("rect-mode-bg");
 const btnMark = document.getElementById("btn-mark");
 const btnModeToggle = document.getElementById("btn-mode-toggle");
 const btnLockedIndicator = document.getElementById("btn-locked-indicator");
-
-// Smart GPS Handling
-display.addEventListener("change", () => {
-    if (display.on) {
-        console.log("Display ON - Starting GPS");
-        // Update UI immediately with old data if available
-        updateUI();
-        // Start GPS
-        gps.startGPS((pos) => {
-            lastGpsPos = pos;
-            updateUI();
-        }, (err) => { console.warn(err); });
-    } else {
-        console.log("Display OFF - Stopping GPS");
-        gps.stopGPS();
-    }
-});
-
-// Initial GPS Start
-gps.startGPS((pos) => { lastGpsPos = pos; updateUI(); }, (err) => { console.warn(err); });
 
 function showScreen(screenId) {
     console.log(`UI: Show ${screenId}`);
@@ -92,16 +70,13 @@ function updateUI() {
     // Distance updates UI regularly
 
     // Mode handling
-    const btnDelete = document.getElementById("btn-delete-course");
     if (isSetupMode) {
         btnMark.style.display = "inline";
-        if (btnDelete) btnDelete.style.display = "inline";
         btnLockedIndicator.style.display = "none";
         txtModeStatus.text = "DONE";
         if (rectModeBg) rectModeBg.style.fill = "#aa0000"; // Red for editing
     } else {
         btnMark.style.display = "none";
-        if (btnDelete) btnDelete.style.display = "none";
         btnLockedIndicator.style.display = "inline";
         txtModeStatus.text = "EDIT";
         if (rectModeBg) rectModeBg.style.fill = "#333333";
@@ -148,13 +123,13 @@ function updateCourseList() {
     for (let i = 0; i < 3; i++) {
         const btn = document.getElementById(`btn-course-${i}`);
         const txt = document.getElementById(`txt-course-${i}`);
-        const delBtn = document.getElementById(`btn-delete-${i}`);
+        const deleteBtn = document.getElementById(`btn-delete-${i}`);
 
         if (list[i]) {
             btn.style.display = "inline";
-            if (delBtn) delBtn.style.display = "inline";
-
             txt.text = list[i].name || `Course ${i + 1}`;
+
+            // Course load handler
             btn.onclick = () => {
                 currentCourse = list[i];
                 currentHole = 1;
@@ -162,21 +137,20 @@ function updateCourseList() {
                 showScreen("main-screen");
                 updateUI();
                 syncCourseToPhone();
+                storage.saveCurrentRound({ courseId: currentCourse.id, currentHole, timestamp: Date.now() });
             };
 
-            // Delete Handler
-            if (delBtn) {
-                delBtn.onclick = () => {
-                    vibration.start("confirmation"); // Reusing confirmation since it's valid
-                    const newList = list.filter((_, index) => index !== i);
-                    storage.saveCourses(newList);
-                    updateCourseList(); // Refresh
+            // Delete handler
+            if (deleteBtn) {
+                deleteBtn.onclick = (e) => {
+                    e.stopPropagation(); // Prevent course load
+                    storage.deleteCourse(list[i].id);
+                    vibration.start("confirmation");
+                    updateCourseList(); // Refresh list
                 };
             }
-
         } else {
             btn.style.display = "none";
-            if (delBtn) delBtn.style.display = "none";
         }
     }
 }
@@ -191,6 +165,7 @@ function setupEventListeners() {
         showScreen("main-screen");
         updateUI();
         syncCourseToPhone();
+        storage.saveCurrentRound({ courseId: currentCourse.id, currentHole, timestamp: Date.now() });
     };
 
     document.getElementById("btn-load-list").onclick = () => {
@@ -209,12 +184,23 @@ function setupEventListeners() {
         updateUI();
     };
 
+    // Hole grid removed - use prev/next buttons only
 
     document.getElementById("btn-prev-hole").onclick = () => {
-        if (currentHole > 1) { currentHole--; vibration.start("bump"); updateUI(); }
+        if (currentHole > 1) {
+            currentHole--;
+            vibration.start("bump");
+            updateUI();
+            storage.saveCurrentRound({ courseId: currentCourse.id, currentHole, timestamp: Date.now() });
+        }
     };
     document.getElementById("btn-next-hole").onclick = () => {
-        if (currentHole < 18) { currentHole++; vibration.start("bump"); updateUI(); }
+        if (currentHole < 18) {
+            currentHole++;
+            vibration.start("bump");
+            updateUI();
+            storage.saveCurrentRound({ courseId: currentCourse.id, currentHole, timestamp: Date.now() });
+        }
     };
     document.getElementById("btn-mark").onclick = () => {
         // Reset Mark Screen Text
@@ -223,40 +209,20 @@ function setupEventListeners() {
         showScreen("mark-screen");
     };
 
-
-    // SWIPE TO EXIT (Right Swipe on Main Screen)
-    let touchStartX = 0;
-    rectModeBg.onmousedown = (evt) => {
-        touchStartX = evt.screenX;
-    };
-    rectModeBg.onmouseup = (evt) => {
-        if (evt.screenX - touchStartX > 100) {
-            // Swipe Right Detected -> Exit
-            vibration.start("nudge");
-            // Save before exit
-            if (currentCourse) {
-                // Save state if needed, but we already save on edit
-                isSetupMode = false;
-                updateUI(); // Reset UI state
-                showScreen("start-screen");
-            }
+    // HOLE SELECT
+    document.getElementById("btn-hole-select-back").onclick = () => showScreen("main-screen");
+    for (let i = 0; i < 18; i++) {
+        const btn = document.getElementById(`hole-grid-${i}`);
+        if (btn) {
+            btn.onclick = () => {
+                currentHole = i + 1;
+                vibration.start("bump");
+                showScreen("main-screen");
+                updateUI();
+                storage.saveCurrentRound({ courseId: currentCourse.id, currentHole, timestamp: Date.now() });
+            };
         }
-    };
-
-    // DELETE COURSE (Main Screen)
-    document.getElementById("btn-delete-course").onclick = () => {
-        vibration.start("confirmation");
-        // Delete
-        const courses = storage.loadCourses();
-        const newCourses = courses.filter(c => c.id !== currentCourse.id);
-        storage.saveCourses(newCourses);
-
-        // Exit
-        currentCourse = null;
-        isSetupMode = false;
-        showScreen("start-screen");
-        // Update list buttons next time
-    };
+    }
 
     // MARK
     document.getElementById("btn-mark-confirm").onclick = () => {
@@ -308,21 +274,14 @@ messaging.peerSocket.onmessage = (evt) => {
     if (d.key === "courseName" && currentCourse) {
         currentCourse.name = d.newValue;
         const courses = storage.loadCourses();
-        let idx = -1;
-        for (let i = 0; i < courses.length; i++) {
-            if (courses[i].id === currentCourse.id) {
-                idx = i;
-                break;
-            }
-        }
+        const idx = courses.findIndex(c => c.id === currentCourse.id);
         if (idx !== -1) {
             courses[idx].name = currentCourse.name;
             storage.saveCourses(courses);
         }
         updateUI();
         syncCourseToPhone();
-        if (vibration) vibration.start("confirmation");
-        console.log(`UI: Course renamed to ${d.newValue}`);
+        vibration.start("nudge");
     } else if (d.key === "useYards") {
         settings.useYards = d.newValue;
         storage.saveSettings(settings);
@@ -343,9 +302,42 @@ messaging.peerSocket.onmessage = (evt) => {
     }
 };
 
+
 gps.startGPS((pos) => { lastGpsPos = pos; updateUI(); }, (err) => { console.warn(err); });
 
+// GPS on wrist-raise for instant updates
+display.onchange = () => {
+    if (display.on && currentCourse) {
+        console.log("Wrist raised - updating GPS");
+        // UI will auto-update via GPS callback
+        updateUI(); // Force immediate UI refresh
+    }
+};
 
 setupEventListeners();
-showScreen("start-screen");
+
+// Auto-resume last round if available
+const savedRound = storage.loadCurrentRound();
+if (savedRound && savedRound.courseId) {
+    const timeSince = Date.now() - (savedRound.timestamp || 0);
+    // Auto-resume if less than 24 hours old
+    if (timeSince < 24 * 60 * 60 * 1000) {
+        currentCourse = storage.loadCourse(savedRound.courseId);
+        if (currentCourse) {
+            currentHole = savedRound.currentHole || 1;
+            isSetupMode = false;
+            showScreen("main-screen");
+            updateUI();
+            syncCourseToPhone();
+            console.log("Auto-resumed round:", currentCourse.name, "Hole", currentHole);
+        } else {
+            showScreen("start-screen");
+        }
+    } else {
+        showScreen("start-screen");
+    }
+} else {
+    showScreen("start-screen");
+}
+
 if (vibration) vibration.start("nudge");
