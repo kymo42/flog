@@ -5,9 +5,12 @@ import * as storage from "./storage";
 import { calculateDistance } from "./distance";
 import * as messaging from "messaging";
 import { display } from "display";
+import { me as appbit } from "appbit";
 
+// Keep App Alive (No Timeout)
+appbit.appTimeoutEnabled = false;
 
-console.log("Flog v4.1 - Debugging Save");
+console.log("Flog v5.0 - Battery Saver & Usability");
 
 // State
 let currentCourse = null;
@@ -17,17 +20,36 @@ let settings = storage.loadSettings();
 let isSetupMode = false;
 
 // UI Elements
-const screens = ["start-screen", "list-screen", "main-screen", "mark-screen", "hole-select-screen"];
+const screens = ["start-screen", "list-screen", "main-screen", "mark-screen"]; // Removed hole-select-screen
 const txtDistance = document.getElementById("txt-distance");
 const txtHoleNum = document.getElementById("txt-hole-num");
 const txtUnit = document.getElementById("txt-unit");
 const txtMainTitle = document.getElementById("txt-main-title");
 const txtModeStatus = document.getElementById("txt-mode-status");
-const txtGpsStatus = document.getElementById("txt-gps-status");
 const rectModeBg = document.getElementById("rect-mode-bg");
 const btnMark = document.getElementById("btn-mark");
 const btnModeToggle = document.getElementById("btn-mode-toggle");
 const btnLockedIndicator = document.getElementById("btn-locked-indicator");
+
+// Smart GPS Handling
+display.addEventListener("change", () => {
+    if (display.on) {
+        console.log("Display ON - Starting GPS");
+        // Update UI immediately with old data if available
+        updateUI();
+        // Start GPS
+        gps.startGPS((pos) => {
+            lastGpsPos = pos;
+            updateUI();
+        }, (err) => { console.warn(err); });
+    } else {
+        console.log("Display OFF - Stopping GPS");
+        gps.stopGPS();
+    }
+});
+
+// Initial GPS Start
+gps.startGPS((pos) => { lastGpsPos = pos; updateUI(); }, (err) => { console.warn(err); });
 
 function showScreen(screenId) {
     console.log(`UI: Show ${screenId}`);
@@ -123,8 +145,12 @@ function updateCourseList() {
     for (let i = 0; i < 3; i++) {
         const btn = document.getElementById(`btn-course-${i}`);
         const txt = document.getElementById(`txt-course-${i}`);
+        const delBtn = document.getElementById(`btn-delete-${i}`);
+
         if (list[i]) {
             btn.style.display = "inline";
+            if (delBtn) delBtn.style.display = "inline";
+
             txt.text = list[i].name || `Course ${i + 1}`;
             btn.onclick = () => {
                 currentCourse = list[i];
@@ -134,8 +160,20 @@ function updateCourseList() {
                 updateUI();
                 syncCourseToPhone();
             };
+
+            // Delete Handler
+            if (delBtn) {
+                delBtn.onclick = () => {
+                    vibration.start("confirmation"); // Reusing confirmation since it's valid
+                    const newList = list.filter((_, index) => index !== i);
+                    storage.saveCourses(newList);
+                    updateCourseList(); // Refresh
+                };
+            }
+
         } else {
             btn.style.display = "none";
+            if (delBtn) delBtn.style.display = "none";
         }
     }
 }
@@ -168,10 +206,6 @@ function setupEventListeners() {
         updateUI();
     };
 
-    document.getElementById("btn-hole-jump").onclick = () => {
-        vibration.start("bump");
-        showScreen("hole-select-screen");
-    };
 
     document.getElementById("btn-prev-hole").onclick = () => {
         if (currentHole > 1) { currentHole--; vibration.start("bump"); updateUI(); }
@@ -186,19 +220,7 @@ function setupEventListeners() {
         showScreen("mark-screen");
     };
 
-    // HOLE SELECT
-    document.getElementById("btn-hole-select-back").onclick = () => showScreen("main-screen");
-    for (let i = 0; i < 18; i++) {
-        const btn = document.getElementById(`hole-grid-${i}`);
-        if (btn) {
-            btn.onclick = () => {
-                currentHole = i + 1;
-                vibration.start("bump");
-                showScreen("main-screen");
-                updateUI();
-            };
-        }
-    }
+    // Grid Removed
 
     // MARK
     document.getElementById("btn-mark-confirm").onclick = () => {
