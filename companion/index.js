@@ -40,6 +40,28 @@ settingsStorage.onchange = (evt) => {
         } catch (e) {
             console.error("Invalid Course Code format");
         }
+    } else if (evt.key === "renameCourse" && evt.newValue) {
+        try {
+            const data = JSON.parse(evt.newValue);
+            if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
+                messaging.peerSocket.send({
+                    key: "courseName",
+                    courseId: data.id,
+                    newValue: data.name
+                });
+            }
+            settingsStorage.removeItem("renameCourse");
+        } catch (e) {
+            console.error("Invalid rename data");
+        }
+    } else if (evt.key === "deleteCourse" && evt.newValue) {
+        if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
+            messaging.peerSocket.send({
+                key: "deleteCourse",
+                courseId: evt.newValue
+            });
+        }
+        settingsStorage.removeItem("deleteCourse");
     } else {
         // Standard settings forwarding
         if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {

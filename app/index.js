@@ -118,6 +118,16 @@ function syncCourseToPhone() {
     }
 }
 
+function syncCourseListToPhone() {
+    if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
+        const courses = storage.loadCourses();
+        messaging.peerSocket.send({
+            type: "sync-courses",
+            data: courses
+        });
+    }
+}
+
 function updateCourseList() {
     const list = storage.loadCourses();
     for (let i = 0; i < 3; i++) {
@@ -147,6 +157,7 @@ function updateCourseList() {
                     storage.deleteCourse(list[i].id);
                     vibration.start("confirmation");
                     updateCourseList(); // Refresh list
+                    syncCourseListToPhone();
                 };
             }
         } else {
@@ -171,6 +182,7 @@ function setupEventListeners() {
     document.getElementById("btn-load-list").onclick = () => {
         vibration.start("bump");
         updateCourseList();
+        syncCourseListToPhone();
         showScreen("list-screen");
     };
 
@@ -271,17 +283,27 @@ function setupEventListeners() {
 // Messaging
 messaging.peerSocket.onmessage = (evt) => {
     const d = evt.data;
-    if (d.key === "courseName" && currentCourse) {
-        currentCourse.name = d.newValue;
+    if (d.key === "courseName" && currentCourse && d.courseId) {
+        // Rename course
         const courses = storage.loadCourses();
-        const idx = courses.findIndex(c => c.id === currentCourse.id);
-        if (idx !== -1) {
-            courses[idx].name = currentCourse.name;
-            storage.saveCourses(courses);
+        for (let i = 0; i < courses.length; i++) {
+            if (courses[i].id === d.courseId) {
+                courses[i].name = d.newValue;
+                storage.saveCourses(courses);
+                if (currentCourse.id === d.courseId) {
+                    currentCourse.name = d.newValue;
+                    updateUI();
+                }
+                break;
+            }
         }
-        updateUI();
-        syncCourseToPhone();
+        syncCourseListToPhone();
         vibration.start("nudge");
+    } else if (d.key === "deleteCourse" && d.courseId) {
+        // Delete course from phone
+        storage.deleteCourse(d.courseId);
+        syncCourseListToPhone();
+        vibration.start("confirmation");
     } else if (d.key === "useYards") {
         settings.useYards = d.newValue;
         storage.saveSettings(settings);

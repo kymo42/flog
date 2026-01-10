@@ -31,7 +31,7 @@
       <text id="txt-course-0" x="145" y="100" fill="white" font-size="24" text-anchor="middle">---</text>
       <g id="btn-delete-0" pointer-events="all">
         <rect x="290" y="70" width="30" height="40" fill="#aa0000" rx="5" ry="5" />
-        <text x="305" y="97" fill="white" font-size="24" text-anchor="middle">X</text>
+        <text x="305" y="97" fill="white" font-size="24" text-anchor="middle" pointer-events="none">X</text>
       </g>
     </g>
     <g id="btn-course-1" pointer-events="all" display="none">
@@ -39,7 +39,7 @@
       <text id="txt-course-1" x="145" y="170" fill="white" font-size="24" text-anchor="middle">---</text>
       <g id="btn-delete-1" pointer-events="all">
         <rect x="290" y="140" width="30" height="40" fill="#aa0000" rx="5" ry="5" />
-        <text x="305" y="167" fill="white" font-size="24" text-anchor="middle">X</text>
+        <text x="305" y="167" fill="white" font-size="24" text-anchor="middle" pointer-events="none">X</text>
       </g>
     </g>
     <g id="btn-course-2" pointer-events="all" display="none">
@@ -47,7 +47,7 @@
       <text id="txt-course-2" x="145" y="240" fill="white" font-size="24" text-anchor="middle">---</text>
       <g id="btn-delete-2" pointer-events="all">
         <rect x="290" y="210" width="30" height="40" fill="#aa0000" rx="5" ry="5" />
-        <text x="305" y="237" fill="white" font-size="24" text-anchor="middle">X</text>
+        <text x="305" y="237" fill="white" font-size="24" text-anchor="middle" pointer-events="none">X</text>
       </g>
     </g>
 
