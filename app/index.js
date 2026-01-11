@@ -262,7 +262,17 @@ function setupEventListeners() {
 
     document.getElementById("btn-course-3").onclick = () => {
         vibration.start("bump");
-        currentCourse = courses[2]; // RAGC 3
+        currentCourse = courses[2]; // Course 3
+        currentHole = 1;
+        isSetupMode = true; // Start in edit mode
+        showScreen("main-screen");
+        updateUI();
+        storage.saveCurrentRound({ courseId: currentCourse.id, currentHole, timestamp: Date.now() });
+    };
+
+    document.getElementById("btn-course-4").onclick = () => {
+        vibration.start("bump");
+        currentCourse = courses[3]; // Course 4
         currentHole = 1;
         isSetupMode = true; // Start in edit mode
         showScreen("main-screen");
