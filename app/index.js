@@ -87,7 +87,7 @@ function updateUI() {
 
     // Hole - H + number
     console.log(`Setting hole text: currentHole=${currentHole}, text=H${currentHole}`);
-    txtHoleNum.text = `H${currentHole}`;
+    txtHoleNum.text = `H ${currentHole}`;
 
     // Unit label - DEBUG: Show currentHole value
     txtUnit.text = `${settings.useYards ? "YARDS" : "METERS"} [H${currentHole}]`;

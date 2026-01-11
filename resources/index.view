@@ -101,7 +101,7 @@
     <text x="40" y="85" fill="#888888" font-size="16" text-anchor="middle" pointer-events="none">MENU</text>
 
     <!-- HOLE NUMBER - Large and prominent -->
-    <text id="txt-hole-num" x="50%" y="85" fill="white" font-size="55" font-family="System-Bold" text-anchor="middle" pointer-events="none">H18</text>
+    <text id="txt-hole-num" x="50%" y="85" fill="white" font-size="60" font-family="System-Bold" text-anchor="middle" pointer-events="none">H 18</text>
     
     <!-- BIG DISTANCE DISPLAY -->
     <text id="txt-distance" x="50%" y="215" fill="white" font-size="110" font-family="System-Bold" text-anchor="middle">---</text>
