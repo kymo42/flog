@@ -128,6 +128,44 @@ function syncCourseListToPhone() {
     }
 }
 
+/**
+ * Remove courses that have no GPS data (accidental creations)
+ * Only keeps courses where at least one hole has coordinates
+ */
+function cleanupEmptyCourses() {
+    try {
+        const courses = storage.loadCourses();
+        const coursesWithData = [];
+
+        for (let i = 0; i < courses.length; i++) {
+            const course = courses[i];
+            let hasData = false;
+
+            // Check if any hole has GPS coordinates
+            for (let j = 0; j < course.holes.length; j++) {
+                if (course.holes[j].latitude && course.holes[j].longitude) {
+                    hasData = true;
+                    break;
+                }
+            }
+
+            if (hasData) {
+                coursesWithData.push(course);
+            } else {
+                console.log("Removing empty course:", course.name);
+            }
+        }
+
+        // Only save if we actually removed something
+        if (coursesWithData.length < courses.length) {
+            storage.saveCourses(coursesWithData);
+            console.log(`Cleaned up ${courses.length - coursesWithData.length} empty courses`);
+        }
+    } catch (error) {
+        console.error("Error cleaning up courses:", error);
+    }
+}
+
 // Track delete confirmation states
 const deleteConfirmStates = {};
 
@@ -214,6 +252,7 @@ function setupEventListeners() {
     document.getElementById("btn-load-list").onclick = () => {
         console.log("LOAD SAVED COURSES button clicked");
         vibration.start("bump"); // Immediate feedback
+        cleanupEmptyCourses(); // Remove courses with no GPS data
         showScreen("list-screen"); // Show screen first to prove it works
         updateCourseList(); // Then populate
         syncCourseListToPhone(); // Then sync
@@ -371,35 +410,34 @@ display.onchange = () => {
 
 setupEventListeners();
 
-// Sync course list to phone on startup
+// Clean up empty courses and sync to phone on startup
 setTimeout(() => {
+    cleanupEmptyCourses();
     syncCourseListToPhone();
 }, 1000);
 
-// Auto-resume disabled for testing
-// const savedRound = storage.loadCurrentRound();
-// if (savedRound && savedRound.courseId) {
-//     const timeSince = Date.now() - (savedRound.timestamp || 0);
-//     // Auto-resume if less than 24 hours old
-//     if (timeSince < 24 * 60 * 60 * 1000) {
-//         currentCourse = storage.loadCourse(savedRound.courseId);
-//         if (currentCourse) {
-//             currentHole = savedRound.currentHole || 1;
-//             isSetupMode = false;
-//             showScreen("main-screen");
-//             updateUI();
-//             syncCourseToPhone();
-//             console.log("Auto-resumed round:", currentCourse.name, "Hole", currentHole);
-//         } else {
-//             showScreen("start-screen");
-//         }
-//     } else {
-//         showScreen("start-screen");
-//     }
-// } else {
-//     showScreen("start-screen");
-// }
-
-showScreen("start-screen");
+// Auto-resume last round if available
+const savedRound = storage.loadCurrentRound();
+if (savedRound && savedRound.courseId) {
+    const timeSince = Date.now() - (savedRound.timestamp || 0);
+    // Auto-resume if less than 24 hours old
+    if (timeSince < 24 * 60 * 60 * 1000) {
+        currentCourse = storage.loadCourse(savedRound.courseId);
+        if (currentCourse) {
+            currentHole = savedRound.currentHole || 1;
+            isSetupMode = false;
+            showScreen("main-screen");
+            updateUI();
+            syncCourseToPhone();
+            console.log("Auto-resumed round:", currentCourse.name, "Hole", currentHole);
+        } else {
+            showScreen("start-screen");
+        }
+    } else {
+        showScreen("start-screen");
+    }
+} else {
+    showScreen("start-screen");
+}
 
 if (vibration) vibration.start("nudge");
