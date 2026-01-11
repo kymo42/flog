@@ -376,28 +376,30 @@ setTimeout(() => {
     syncCourseListToPhone();
 }, 1000);
 
-// Auto-resume last round if available
-const savedRound = storage.loadCurrentRound();
-if (savedRound && savedRound.courseId) {
-    const timeSince = Date.now() - (savedRound.timestamp || 0);
-    // Auto-resume if less than 24 hours old
-    if (timeSince < 24 * 60 * 60 * 1000) {
-        currentCourse = storage.loadCourse(savedRound.courseId);
-        if (currentCourse) {
-            currentHole = savedRound.currentHole || 1;
-            isSetupMode = false;
-            showScreen("main-screen");
-            updateUI();
-            syncCourseToPhone();
-            console.log("Auto-resumed round:", currentCourse.name, "Hole", currentHole);
-        } else {
-            showScreen("start-screen");
-        }
-    } else {
-        showScreen("start-screen");
-    }
-} else {
-    showScreen("start-screen");
-}
+// Auto-resume disabled for testing
+// const savedRound = storage.loadCurrentRound();
+// if (savedRound && savedRound.courseId) {
+//     const timeSince = Date.now() - (savedRound.timestamp || 0);
+//     // Auto-resume if less than 24 hours old
+//     if (timeSince < 24 * 60 * 60 * 1000) {
+//         currentCourse = storage.loadCourse(savedRound.courseId);
+//         if (currentCourse) {
+//             currentHole = savedRound.currentHole || 1;
+//             isSetupMode = false;
+//             showScreen("main-screen");
+//             updateUI();
+//             syncCourseToPhone();
+//             console.log("Auto-resumed round:", currentCourse.name, "Hole", currentHole);
+//         } else {
+//             showScreen("start-screen");
+//         }
+//     } else {
+//         showScreen("start-screen");
+//     }
+// } else {
+//     showScreen("start-screen");
+// }
+
+showScreen("start-screen");
 
 if (vibration) vibration.start("nudge");
