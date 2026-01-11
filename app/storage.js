@@ -17,12 +17,12 @@ export function saveCourses(courses) {
 }
 
 /**
- * Initialize 3 fixed courses (RAGC1, RAGC2, RAGC3) with 18 holes each
+ * Initialize 4 fixed courses with 18 holes each
  */
 function initializeFixedCourses() {
     const courses = [];
 
-    for (let courseNum = 1; courseNum <= 3; courseNum++) {
+    for (let courseNum = 1; courseNum <= 4; courseNum++) {
         const holes = [];
         for (let holeNum = 1; holeNum <= 18; holeNum++) {
             holes.push({
@@ -33,8 +33,8 @@ function initializeFixedCourses() {
         }
 
         courses.push({
-            id: `ragc${courseNum}`,
-            name: `RAGC ${courseNum}`,
+            id: `course${courseNum}`,
+            name: `Course ${courseNum}`,
             holes: holes
         });
     }

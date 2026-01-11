@@ -6,22 +6,31 @@
   <!-- ========================================================== -->
   <g id="start-screen" display="inline">
     <rect width="100%" height="100%" fill="black" />
-    <text x="50%" y="60" fill="white" font-size="50" font-family="System-Bold" text-anchor="middle">FLOG</text>
-    <text x="50%" y="90" fill="#aaaaaa" font-size="18" text-anchor="middle">Select Course</text>
+    <text x="50%" y="40" fill="white" font-size="50" font-family="System-Bold" text-anchor="middle">FLOG</text>
     
+    <!-- 2x2 Grid of Course Buttons -->
+    <!-- Top Left - Course 1 -->
     <g id="btn-course-1" pointer-events="all">
-      <rect x="28" y="110" width="280" height="60" fill="#0055ff" rx="15" ry="15" />
-      <text x="168" y="152" fill="white" font-size="30" font-family="System-Bold" text-anchor="middle" pointer-events="none">RAGC 1</text>
+      <rect x="10" y="60" width="155" height="155" fill="#0055ff" rx="10" ry="10" />
+      <text x="87.5" y="155" fill="white" font-size="80" font-family="System-Bold" text-anchor="middle" pointer-events="none">1</text>
     </g>
 
+    <!-- Top Right - Course 2 -->
     <g id="btn-course-2" pointer-events="all">
-      <rect x="28" y="180" width="280" height="60" fill="#0055ff" rx="15" ry="15" />
-      <text x="168" y="222" fill="white" font-size="30" font-family="System-Bold" text-anchor="middle" pointer-events="none">RAGC 2</text>
+      <rect x="175" y="60" width="155" height="155" fill="#0055ff" rx="10" ry="10" />
+      <text x="252.5" y="155" fill="white" font-size="80" font-family="System-Bold" text-anchor="middle" pointer-events="none">2</text>
     </g>
     
+    <!-- Bottom Left - Course 3 -->
     <g id="btn-course-3" pointer-events="all">
-      <rect x="28" y="250" width="280" height="60" fill="#0055ff" rx="15" ry="15" />
-      <text x="168" y="292" fill="white" font-size="30" font-family="System-Bold" text-anchor="middle" pointer-events="none">RAGC 3</text>
+      <rect x="10" y="225" width="155" height="155" fill="#0055ff" rx="10" ry="10" />
+      <text x="87.5" y="320" fill="white" font-size="80" font-family="System-Bold" text-anchor="middle" pointer-events="none">3</text>
+    </g>
+    
+    <!-- Bottom Right - Course 4 -->
+    <g id="btn-course-4" pointer-events="all">
+      <rect x="175" y="225" width="155" height="155" fill="#0055ff" rx="10" ry="10" />
+      <text x="252.5" y="320" fill="white" font-size="80" font-family="System-Bold" text-anchor="middle" pointer-events="none">4</text>
     </g>
   </g>
 
