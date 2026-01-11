@@ -86,16 +86,16 @@
       <rect id="gps-bar-4" x="36" y="0" width="8" height="40" fill="#333333" />
     </g>
 
+    <!-- MENU button - left side, same row as EDIT/DONE -->
+    <g id="btn-main-menu" pointer-events="all" transform="translate(10, 140)">
+      <rect x="0" y="0" width="70" height="60" fill="#444444" rx="10" ry="10" />
+      <text x="35" y="38" fill="white" font-size="18" font-family="System-Bold" text-anchor="middle" pointer-events="none">MENU</text>
+    </g>
+
     <!-- Mode Toggle Button (Right Side) -->
     <g id="btn-mode-toggle" pointer-events="all" transform="translate(256, 140)">
       <rect id="rect-mode-bg" x="0" y="0" width="70" height="60" fill="#333333" rx="10" ry="10" />
       <text id="txt-mode-status" x="35" y="38" fill="white" font-size="20" font-family="System-Bold" text-anchor="middle" pointer-events="none">EDIT</text>
-    </g>
-    
-    <!-- MENU button - top left corner -->
-    <g id="btn-main-menu" pointer-events="all">
-      <rect x="10" y="10" width="60" height="35" fill="#444444" rx="10" ry="10" />
-      <text x="40" y="35" fill="white" font-size="18" text-anchor="middle" pointer-events="none">MENU</text>
     </g>
 
     <!-- HOLE NUMBER - Large and prominent -->
