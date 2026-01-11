@@ -43,20 +43,33 @@ function initializeFixedCourses() {
 }
 
 /**
- * Load courses from file storage (creates 3 fixed courses if none exist)
- * @returns {Array} Array of 3 course objects
+ * Load courses from file storage (creates 4 fixed courses if none exist or if they don't have 18 holes)
+ * @returns {Array} Array of 4 course objects
  */
 export function loadCourses() {
     try {
         const data = fs.readFileSync(COURSES_FILE, "cbor");
         if (data && data.length > 0) {
-            return data;
+            // Check if all courses have 18 holes
+            let needsReinit = false;
+            for (let i = 0; i < data.length; i++) {
+                if (!data[i].holes || data[i].holes.length !== 18) {
+                    needsReinit = true;
+                    break;
+                }
+            }
+
+            if (!needsReinit && data.length === 4) {
+                return data;
+            }
+
+            console.log("Courses need reinitialization (wrong hole count or course count)");
         }
     } catch (error) {
-        console.log("No courses found, initializing 3 fixed courses");
+        console.log("No courses found, initializing 4 fixed courses");
     }
 
-    // Initialize 3 fixed courses
+    // Initialize 4 fixed courses with 18 holes each
     const courses = initializeFixedCourses();
     saveCourses(courses);
     return courses;
