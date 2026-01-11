@@ -113,7 +113,7 @@
     <!-- CONTROLS FOOTER -->
     <g id="btn-prev-hole" pointer-events="all">
       <rect x="10" y="250" width="80" height="70" fill="#222222" rx="10" ry="10" />
-      <text x="50" y="295" fill="white" font-size="40" text-anchor="middle">&lt;</text>
+      <text x="50" y="295" fill="white" font-size="40" text-anchor="middle" pointer-events="none">&lt;</text>
     </g>
     
     <!-- MARK BUTTON -->
@@ -125,12 +125,12 @@
     <!-- LOCKED INDICATOR -->
     <g id="btn-locked-indicator" pointer-events="all">
       <rect x="100" y="250" width="136" height="70" fill="#111111" rx="10" ry="10" />
-      <text x="168" y="293" fill="#444444" font-size="20" text-anchor="middle">PLAY MODE</text>
+      <text x="168" y="293" fill="#444444" font-size="20" text-anchor="middle" pointer-events="none">PLAY MODE</text>
     </g>
 
     <g id="btn-next-hole" pointer-events="all">
       <rect x="246" y="250" width="80" height="70" fill="#222222" rx="10" ry="10" />
-      <text x="286" y="295" fill="white" font-size="40" text-anchor="middle">&gt;</text>
+      <text x="286" y="295" fill="white" font-size="40" text-anchor="middle" pointer-events="none">&gt;</text>
     </g>
   </g>
 
