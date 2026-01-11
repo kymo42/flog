@@ -4,33 +4,53 @@
   <!-- ========================================================== -->
   <!-- START SCREEN                                               -->
   <!-- ========================================================== -->
+  <!-- Gradient definitions for shading -->
+  <defs>
+    <linearGradient id="blueGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#0077ff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0044aa;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="yellowGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffdd00;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#cc9900;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="redGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff3333;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#cc0000;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="orangeGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff8800;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#cc5500;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
   <g id="start-screen" display="inline">
     <rect width="100%" height="100%" fill="black" />
     <text x="50%" y="50" fill="white" font-size="50" font-family="System-Bold" text-anchor="middle">FLOG</text>
     
-    <!-- 2x2 Grid of Course Buttons (60x60 each) -->
-    <!-- Top Left - Course 1 -->
+    <!-- 2x2 Grid of Course Buttons (80x80 each, mirrored numbers) -->
+    <!-- Top Left - Course 1 (Blue) -->
     <g id="btn-course-1" pointer-events="all">
-      <rect x="90" y="100" width="60" height="60" fill="#0055ff" rx="8" ry="8" />
-      <text x="120" y="140" fill="white" font-size="40" font-family="System-Bold" text-anchor="middle" pointer-events="none">1</text>
+      <rect x="80" y="100" width="80" height="80" fill="url(#blueGrad)" rx="10" ry="10" />
+      <text x="120" y="155" fill="white" font-size="50" font-family="System-Bold" text-anchor="middle" pointer-events="none" transform="scale(-1, 1) translate(-240, 0)">1</text>
     </g>
 
-    <!-- Top Right - Course 2 -->
+    <!-- Top Right - Course 2 (Yellow) -->
     <g id="btn-course-2" pointer-events="all">
-      <rect x="186" y="100" width="60" height="60" fill="#0055ff" rx="8" ry="8" />
-      <text x="216" y="140" fill="white" font-size="40" font-family="System-Bold" text-anchor="middle" pointer-events="none">2</text>
+      <rect x="176" y="100" width="80" height="80" fill="url(#yellowGrad)" rx="10" ry="10" />
+      <text x="216" y="155" fill="black" font-size="50" font-family="System-Bold" text-anchor="middle" pointer-events="none" transform="scale(-1, 1) translate(-432, 0)">2</text>
     </g>
     
-    <!-- Bottom Left - Course 3 -->
+    <!-- Bottom Left - Course 3 (Red) -->
     <g id="btn-course-3" pointer-events="all">
-      <rect x="90" y="180" width="60" height="60" fill="#0055ff" rx="8" ry="8" />
-      <text x="120" y="220" fill="white" font-size="40" font-family="System-Bold" text-anchor="middle" pointer-events="none">3</text>
+      <rect x="80" y="196" width="80" height="80" fill="url(#redGrad)" rx="10" ry="10" />
+      <text x="120" y="251" fill="white" font-size="50" font-family="System-Bold" text-anchor="middle" pointer-events="none" transform="scale(-1, 1) translate(-240, 0)">3</text>
     </g>
     
-    <!-- Bottom Right - Course 4 -->
+    <!-- Bottom Right - Course 4 (Orange) -->
     <g id="btn-course-4" pointer-events="all">
-      <rect x="186" y="180" width="60" height="60" fill="#0055ff" rx="8" ry="8" />
-      <text x="216" y="220" fill="white" font-size="40" font-family="System-Bold" text-anchor="middle" pointer-events="none">4</text>
+      <rect x="176" y="196" width="80" height="80" fill="url(#orangeGrad)" rx="10" ry="10" />
+      <text x="216" y="251" fill="white" font-size="50" font-family="System-Bold" text-anchor="middle" pointer-events="none" transform="scale(-1, 1) translate(-432, 0)">4</text>
     </g>
   </g>
 
