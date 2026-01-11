@@ -4,187 +4,319 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FLOG User Manual</title>
+    <title>FLOG - Golf Rangefinder User Manual</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
             line-height: 1.6;
             color: #333;
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 20px;
-            background-color: #fff;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-            border-bottom: 2px solid #eee;
-            padding-bottom: 20px;
-        }
-
-        .icon {
-            width: 120px;
-            height: 120px;
-            margin-bottom: 15px;
         }
 
         h1 {
-            color: #2c3e50;
-            font-size: 2.5em;
-            margin-bottom: 10px;
+            color: #0055ff;
+            border-bottom: 3px solid #0055ff;
+            padding-bottom: 10px;
         }
 
         h2 {
-            color: #2c3e50;
-            border-left: 5px solid #0055ff;
-            padding-left: 15px;
+            color: #0055ff;
             margin-top: 30px;
-        }
-
-        .step {
-            background: #f9f9f9;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 10px 0;
-            border-left: 4px solid #f1c40f;
-        }
-
-        .pro-tip {
-            background: #e7f3ff;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 20px 0;
             border-left: 4px solid #0055ff;
+            padding-left: 10px;
         }
 
-        .footer {
-            margin-top: 50px;
+        h3 {
+            color: #555;
+            margin-top: 20px;
+        }
+
+        .feature {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .button {
+            display: inline-block;
+            background: #0055ff;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            margin: 2px;
+        }
+
+        .button.yellow {
+            background: #ffcc00;
+            color: black;
+        }
+
+        .button.red {
+            background: #ff3333;
+        }
+
+        .button.orange {
+            background: #ff8800;
+        }
+
+        .button.gray {
+            background: #444444;
+        }
+
+        .screen {
+            background: #000;
+            color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-family: monospace;
             text-align: center;
-            font-size: 0.9em;
-            color: #777;
         }
 
-        img {
-            max-width: 100%;
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 10px;
+            margin: 15px 0;
         }
 
-        /* Print optimizations */
-        @media print {
-            body {
-                margin: 0;
-                padding: 0;
-                font-size: 11pt;
-            }
+        .tip {
+            background: #d1ecf1;
+            border-left: 4px solid #0c5460;
+            padding: 10px;
+            margin: 15px 0;
+        }
 
-            .header {
-                border-bottom: 1px solid #ccc;
-            }
+        ul {
+            margin-left: 20px;
+        }
 
-            h2 {
-                page-break-after: avoid;
-            }
-
-            .step,
-            .pro-tip {
-                border: 1px solid #ddd;
-                break-inside: avoid;
-            }
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
         }
     </style>
 </head>
 
 <body>
-
-    <div class="header">
-        <img src="flog_icon.png" alt="FLOG Icon" class="icon">
-        <h1>FLOG</h1>
-        <p><strong>Simple GPS Golf Rangefinder for Fitbit</strong></p>
+    <div style="text-align: center; margin-bottom: 20px;">
+        <img src="flog-icon.png" alt="FLOG Icon" style="width: 120px; height: 120px; border-radius: 60px;">
     </div>
-
-    <p><strong>FLOG</strong> is a super simple, "no-fuss" rangefinder for your <strong>Fitbit Versa 3</strong> or
-        <strong>Fitbit Sense</strong>. It handles the distances so you can focus on your swing. It works on
-        <strong>ANY</strong> golf course in the world because you teach it where the greens are as you play!
+    <h1>FLOG - Golf Rangefinder</h1>
+    <p><strong>Version:</strong> 4.1<br>
+        <strong>Compatible with:</strong> Fitbit Versa 3, Fitbit Sense
     </p>
 
-    <h2>🚀 Quick Start (In 3 Simple Steps)</h2>
-
-    <div class="step">
-        <strong>1. Start a Round</strong><br>
-        On your watch, tap <strong>NEW COURSE</strong>. The watch will start looking for your location (GPS).
-    </div>
-
-    <div class="step">
-        <strong>2. Jump to any Hole</strong><br>
-        Tapping the <strong>"HOLE X"</strong> text at the top of the main screen now opens a grid of all 18 holes. This
-        allows you to jump to any hole instantly to see distances or mark a new green.
-    </div>
-
-    <div class="step">
-        <strong>3. "Mark" Your Greens</strong><br>
-        The first time you play a course, walk to the <strong>middle of the green</strong> on any hole.
-        <ul>
-            <li>Tap the red <strong>EDIT</strong> button in the top corner (this "unlocks" the marking button).</li>
-            <li>Tap the yellow <strong>MARK</strong> button.</li>
-            <li>Tap <strong>YES, SET HERE</strong>. (Note: If you have no GPS signal, the button will show "WAITING..."
-                - simply wait for a better view of the sky).</li>
-            <li>Your watch vibrates. <strong>Done!</strong> Now the watch knows exactly where that green is.</li>
-            <li>Tap <strong>EDIT</strong> again to lock it (Back to "Play Mode").</li>
-        </ul>
-    </div>
-
-    <div class="step">
-        <strong>4. Just Play</strong><br>
-        Next time you stand on the fairway, the watch will show you exactly how many <strong>Meters</strong> (or Yards)
-        you are from the center of that green.
-    </div>
-
-    <h2>📱 How to Name Your Course</h2>
-    <p>To give your round a real name (like <em>Pebble Beach</em>):</p>
+    <h2>📱 Quick Start</h2>
     <ol>
-        <li>Open the <strong>Fitbit App</strong> on your phone.</li>
-        <li>Tap your <strong>Watch Icon</strong> (top left).</li>
-        <li>Tap <strong>Gallery</strong> &rarr; <strong>Flog</strong> &rarr; <strong>Settings</strong>.</li>
-        <li>Type the name in the <strong>"Course Name"</strong> box.</li>
-        <li>Your watch will update instantly!</li>
+        <li>Install FLOG from the Fitbit app gallery</li>
+        <li>Open FLOG on your watch</li>
+        <li>Select one of 4 courses: <span class="button">1</span> <span class="button">2</span> <span
+                class="button">3</span> <span class="button">4</span></li>
+        <li>Start playing golf!</li>
     </ol>
 
-    <h2>🤝 How to Share with Friends</h2>
-    <p>Did you map a perfect course? Share it with your buddies!</p>
+    <h2>🎯 Main Features</h2>
+
+    <div class="feature">
+        <h3>4 Fixed Courses</h3>
+        <p>FLOG provides 4 pre-configured courses, each with 18 holes. Simply select your course and start playing.</p>
+    </div>
+
+    <div class="feature">
+        <h3>GPS Distance Measurement</h3>
+        <p>Automatically calculates distance to the green using GPS coordinates you've marked for each hole.</p>
+    </div>
+
+    <div class="feature">
+        <h3>Two Modes</h3>
+        <ul>
+            <li><strong>EDIT Mode:</strong> Mark green locations for each hole</li>
+            <li><strong>PLAY Mode:</strong> View distances to marked greens</li>
+        </ul>
+    </div>
+
+    <h2>🎮 Using FLOG</h2>
+
+    <h3>Course Selection</h3>
+    <p>When you open FLOG, you'll see 4 colored course buttons:</p>
+    <div class="screen">
+        FLOG<br><br>
+        <span class="button">1</span> <span class="button yellow">2</span><br><br>
+        <span class="button red">3</span> <span class="button orange">4</span>
+    </div>
+    <p>Tap any course to start. Each course has 18 holes.</p>
+
+    <h3>Main Screen</h3>
+    <div class="screen">
+        <span class="button gray">MENU</span> &nbsp;&nbsp; H 1 &nbsp;&nbsp; <span
+            class="button gray">EDIT</span><br><br>
+        GPS ▮▮▮▮<br><br>
+        125<br>
+        METERS<br><br>
+        &lt; &nbsp; <span class="button yellow">MARK</span> &nbsp; &gt;
+    </div>
+
+    <h4>Display Elements:</h4>
     <ul>
-        <li>Go to the <strong>Flog Settings</strong> on your phone (see above).</li>
-        <li>Copy the long <strong>Export Code</strong> and text it to your friend.</li>
-        <li>They paste it into their <strong>"Import Code"</strong> box.</li>
-        <li>Their watch now has all your markers!</li>
+        <li><strong>MENU:</strong> Tap anywhere in the top area to return to course selection</li>
+        <li><strong>H 1-18:</strong> Current hole number</li>
+        <li><strong>EDIT/DONE:</strong> Toggle between EDIT and PLAY modes</li>
+        <li><strong>GPS Bars:</strong> GPS signal strength (4 bars = excellent)</li>
+        <li><strong>Distance:</strong> Distance to green in meters or yards</li>
+        <li><strong>&lt; &gt; Arrows:</strong> Navigate between holes</li>
+        <li><strong>MARK Button:</strong> Only visible in EDIT mode</li>
     </ul>
 
-    <div class="pro-tip">
-        <strong>⌚ Device Compatibility</strong>
+    <h3>Setting Up a Course (EDIT Mode)</h3>
+    <ol>
+        <li>Select your course from the start screen</li>
+        <li>The app starts in <strong>EDIT</strong> mode (red button on right)</li>
+        <li>Walk to the green of hole 1</li>
+        <li>Wait for good GPS signal (3-4 bars)</li>
+        <li>Tap the <span class="button yellow">MARK</span> button</li>
+        <li>Confirm by tapping <strong>YES, SET HERE</strong></li>
+        <li>Use the <strong>&gt;</strong> arrow to go to hole 2</li>
+        <li>Repeat for all 18 holes</li>
+    </ol>
+
+    <div class="tip">
+        <strong>💡 Tip:</strong> You don't need to mark all 18 holes at once. Mark holes as you play, and the app will
+        remember them for next time.
+    </div>
+
+    <h3>Playing a Round (PLAY Mode)</h3>
+    <ol>
+        <li>Select your course</li>
+        <li>Tap <strong>EDIT</strong> to switch to <strong>DONE</strong> (PLAY mode)</li>
+        <li>The <span class="button yellow">MARK</span> button disappears</li>
+        <li>Walk towards the green - distance updates automatically</li>
+        <li>Use <strong>&lt;</strong> and <strong>&gt;</strong> arrows to navigate holes</li>
+    </ol>
+
+    <div class="screen">
+        <span class="button gray">MENU</span> &nbsp;&nbsp; H 7 &nbsp;&nbsp; <span
+            class="button gray">DONE</span><br><br>
+        GPS ▮▮▮▮<br><br>
+        142<br>
+        METERS<br><br>
+        &lt; &nbsp; PLAY MODE &nbsp; &gt;
+    </div>
+
+    <h3>Switching Courses</h3>
+    <p>Tap anywhere in the top area (where MENU is shown) to return to course selection. Your progress is automatically
+        saved.</p>
+
+    <h2>⚙️ Settings (Phone App)</h2>
+    <p>Open the Fitbit app on your phone and go to FLOG settings:</p>
+
+    <h3>Distance Units</h3>
+    <ul>
+        <li><strong>Meters:</strong> Default metric measurement</li>
+        <li><strong>Yards:</strong> Imperial measurement</li>
+    </ul>
+
+    <h3>Vibration Feedback</h3>
+    <p>Toggle haptic feedback when marking holes and navigating.</p>
+
+    <h2>❓ Troubleshooting</h2>
+
+    <h3>GPS Not Working</h3>
+    <ul>
+        <li>Make sure Location Services are enabled for Fitbit</li>
+        <li>Wait 30-60 seconds for GPS to acquire signal</li>
+        <li>Ensure you're outdoors with clear sky view</li>
+        <li>Check GPS bars - wait for 3-4 bars before marking</li>
+    </ul>
+
+    <h3>Distance Shows "---"</h3>
+    <ul>
+        <li>You haven't marked this hole yet (use EDIT mode)</li>
+        <li>GPS signal is lost (check GPS bars)</li>
+    </ul>
+
+    <h3>Can't See Full Hole Number</h3>
+    <ul>
+        <li>Make sure you're running the latest version</li>
+        <li>Uninstall and reinstall the app</li>
+    </ul>
+
+    <div class="warning">
+        <strong>⚠️ Note:</strong> FLOG requires GPS to function. Battery usage will be higher than normal watch faces.
+        For best battery life, close the app when not playing golf.
+    </div>
+
+    <h2>📊 Course Management</h2>
+
+    <h3>How Courses Work</h3>
+    <ul>
+        <li>FLOG has 4 fixed courses (numbered 1-4)</li>
+        <li>Each course has 18 holes</li>
+        <li>GPS data is saved automatically when you mark holes</li>
+        <li>You can use different courses for different golf courses</li>
+        <li>Data persists even if you uninstall (stored on watch)</li>
+    </ul>
+
+    <h3>Updating a Hole</h3>
+    <p>To update a hole's green location:</p>
+    <ol>
+        <li>Navigate to that hole</li>
+        <li>Switch to EDIT mode</li>
+        <li>Tap <span class="button yellow">MARK</span></li>
+        <li>The new location overwrites the old one</li>
+    </ol>
+
+    <h2>🔋 Battery Tips</h2>
+    <ul>
+        <li>GPS uses significant battery - charge before your round</li>
+        <li>Close FLOG when not playing to save battery</li>
+        <li>The app auto-sleeps when you lower your wrist</li>
+        <li>Typical usage: 4-5 hours of active GPS tracking</li>
+    </ul>
+
+    <h2>🏌️ Best Practices</h2>
+
+    <div class="tip">
+        <strong>💡 For Best Results:</strong>
         <ul>
-            <li><strong>Supported:</strong> Fitbit Versa 3, Fitbit Sense.</li>
-            <li><strong>Not Supported:</strong> Versa 1/2/Lite (Different screen/SDK), Versa 4/Sense 2 (Google disabled
-                3rd party apps).</li>
+            <li>Mark greens from the center of the green</li>
+            <li>Wait for 3-4 GPS bars before marking</li>
+            <li>Mark holes in EDIT mode, play rounds in PLAY mode</li>
+            <li>Use course 1 for your home course, others for away courses</li>
+            <li>The app remembers your last hole - it will resume where you left off</li>
         </ul>
     </div>
 
-    <div class="pro-tip">
-        <strong>💡 Pro Tips for Best Results</strong>
-        <ul>
-            <li><strong>Battery Safe:</strong> The screen will turn off or dim normally to save battery. Just lift your
-                wrist (gesture) to wake it up and see the latest distance.</li>
-            <li><strong>Wait for GPS:</strong> Stand outside for 30 seconds when you first start. numbers will show
-                "---" until the watch connects.</li>
-            <li><strong>Play Mode vs Edit Mode:</strong> Keep it in <strong>Play Mode</strong> (locked) most of the time
-                to prevent accidental changes.</li>
-            <li><strong>Battery:</strong> GPS uses power. Start with at least 50% charge for a full 18 holes.</li>
-        </ul>
-    </div>
+    <h2>📝 Version History</h2>
+    <h3>v4.1 (Current)</h3>
+    <ul>
+        <li>Fixed hole number display for holes 10-18</li>
+        <li>Improved text rendering with proper spacing</li>
+        <li>4 fixed courses with 18 holes each</li>
+        <li>Simplified course selection with colored buttons</li>
+        <li>MENU button for easy navigation</li>
+        <li>Auto-resume last played hole</li>
+    </ul>
 
-    <div class="footer">
-        <p>Hit 'em straight! 🏌️‍♂️</p>
-        <p>https://github.com/kymo42/flog</p>
-    </div>
+    <h2>💬 Support</h2>
+    <p>For issues or questions:</p>
+    <ul>
+        <li>Check this manual first</li>
+        <li>Ensure you have the latest version</li>
+        <li>Try uninstalling and reinstalling</li>
+        <li>Contact: <a href="https://github.com/kymo42/flog">GitHub Repository</a></li>
+    </ul>
 
+    <hr>
+    <p style="text-align: center; color: #888; margin-top: 40px;">
+        <small>FLOG Golf Rangefinder © 2026 | Made for Fitbit Versa 3 & Sense</small>
+    </p>
 </body>
 
 </html>

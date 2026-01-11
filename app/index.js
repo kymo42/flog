@@ -5,6 +5,7 @@ import * as storage from "./storage";
 import { calculateDistance } from "./distance";
 import * as messaging from "messaging";
 import { display } from "display";
+import { me as appbit } from "appbit";
 
 
 console.log("Flog v4.1 - Debugging Save");
@@ -467,3 +468,15 @@ if (savedRound && savedRound.courseId) {
 }
 
 if (vibration) vibration.start("nudge");
+
+// Save state when app is about to close (for quick resume)
+appbit.addEventListener("unload", () => {
+    console.log("App unloading - saving state");
+    if (currentCourse && currentHole) {
+        storage.saveCurrentRound({
+            courseId: currentCourse.id,
+            currentHole: currentHole,
+            timestamp: Date.now()
+        });
+    }
+});
