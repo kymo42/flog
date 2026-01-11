@@ -244,7 +244,7 @@ function setupEventListeners() {
         vibration.start("bump");
         currentCourse = courses[0]; // RAGC 1
         currentHole = 1;
-        isSetupMode = false;
+        isSetupMode = true; // Start in edit mode
         showScreen("main-screen");
         updateUI();
         storage.saveCurrentRound({ courseId: currentCourse.id, currentHole, timestamp: Date.now() });
@@ -254,7 +254,7 @@ function setupEventListeners() {
         vibration.start("bump");
         currentCourse = courses[1]; // RAGC 2
         currentHole = 1;
-        isSetupMode = false;
+        isSetupMode = true; // Start in edit mode
         showScreen("main-screen");
         updateUI();
         storage.saveCurrentRound({ courseId: currentCourse.id, currentHole, timestamp: Date.now() });
@@ -264,7 +264,7 @@ function setupEventListeners() {
         vibration.start("bump");
         currentCourse = courses[2]; // RAGC 3
         currentHole = 1;
-        isSetupMode = false;
+        isSetupMode = true; // Start in edit mode
         showScreen("main-screen");
         updateUI();
         storage.saveCurrentRound({ courseId: currentCourse.id, currentHole, timestamp: Date.now() });
