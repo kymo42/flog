@@ -84,7 +84,7 @@
     </g>
 
     <!-- HOLE NUMBER - Large and prominent -->
-    <text id="txt-hole-num" x="50%" y="100" fill="white" font-size="110" font-family="System-Bold" text-anchor="middle">1</text>
+    <text id="txt-hole-num" x="50%" y="90" fill="white" font-size="80" font-family="System-Bold" text-anchor="middle">1</text>
     
     <!-- BIG DISTANCE DISPLAY -->
     <text id="txt-distance" x="50%" y="215" fill="white" font-size="110" font-family="System-Bold" text-anchor="middle">---</text>
