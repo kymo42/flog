@@ -86,6 +86,7 @@ function updateUI() {
     if (txtMainTitle) txtMainTitle.text = currentCourse.name.toUpperCase().substring(0, 15);
 
     // Hole - H + number
+    console.log(`Setting hole text: currentHole=${currentHole}, text=H${currentHole}`);
     txtHoleNum.text = `H${currentHole}`;
 
     // Unit label
@@ -100,12 +101,12 @@ function updateUI() {
                 hole.latitude, hole.longitude
             );
             const val = settings.useYards ? Math.round(m * 1.09361) : Math.round(m);
-            txtDistance.text = val.toString();
+            txtDistance.text = `${val} [${currentHole}]`; // DEBUG: Show currentHole value
         } else {
-            txtDistance.text = "---";
+            txtDistance.text = `--- [${currentHole}]`; // DEBUG: Show currentHole value
         }
     } else {
-        txtDistance.text = "---";
+        txtDistance.text = `--- [${currentHole}]`; // DEBUG: Show currentHole value
     }
 }
 
