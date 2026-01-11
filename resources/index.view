@@ -92,16 +92,16 @@
       <text id="txt-mode-status" x="35" y="38" fill="white" font-size="20" font-family="System-Bold" text-anchor="middle" pointer-events="none">EDIT</text>
     </g>
     
-    <!-- MENU button - large invisible area covering top of screen -->
+    <!-- MENU button - left side at hole number height -->
     <g id="btn-main-menu" pointer-events="all">
-      <rect x="0" y="0" width="336" height="100" fill="transparent" />
+      <rect x="0" y="55" width="80" height="60" fill="transparent" />
     </g>
     
-    <!-- MENU label - just visual, not clickable -->
-    <text x="168" y="35" fill="#888888" font-size="18" text-anchor="middle" pointer-events="none">MENU</text>
+    <!-- MENU label - just visual -->
+    <text x="40" y="85" fill="#888888" font-size="16" text-anchor="middle" pointer-events="none">MENU</text>
 
-    <!-- HOLE NUMBER - Large and prominent (visual only, MENU button is behind it) -->
-    <text id="txt-hole-num" x="50%" y="85" fill="white" font-size="60" font-family="System-Bold" text-anchor="middle" pointer-events="none">H1</text>
+    <!-- HOLE NUMBER - Large and prominent -->
+    <text id="txt-hole-num" x="50%" y="85" fill="white" font-size="50" font-family="System-Bold" text-anchor="middle" pointer-events="none">H1</text>
     
     <!-- BIG DISTANCE DISPLAY -->
     <text id="txt-distance" x="50%" y="215" fill="white" font-size="110" font-family="System-Bold" text-anchor="middle">---</text>
