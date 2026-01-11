@@ -91,6 +91,12 @@
       <rect id="rect-mode-bg" x="0" y="0" width="70" height="60" fill="#333333" rx="10" ry="10" />
       <text id="txt-mode-status" x="35" y="38" fill="white" font-size="20" font-family="System-Bold" text-anchor="middle" pointer-events="none">EDIT</text>
     </g>
+    
+    <!-- MENU button - top left corner -->
+    <g id="btn-main-menu" pointer-events="all">
+      <rect x="10" y="10" width="60" height="35" fill="#444444" rx="10" ry="10" />
+      <text x="40" y="35" fill="white" font-size="18" text-anchor="middle" pointer-events="none">MENU</text>
+    </g>
 
     <!-- HOLE NUMBER - Large and prominent -->
     <text id="txt-hole-num" x="50%" y="85" fill="white" font-size="60" font-family="System-Bold" text-anchor="middle">HOLE 1</text>
@@ -108,11 +114,6 @@
       <text x="50" y="312" fill="white" font-size="24" text-anchor="middle">&lt;</text>
     </g>
     
-    <g id="btn-main-menu" pointer-events="all">
-      <rect x="10" y="250" width="80" height="35" fill="#444444" rx="10" ry="10" />
-      <text x="50" y="275" fill="white" font-size="18" text-anchor="middle" pointer-events="none">MENU</text>
-    </g>
-
     <!-- MARK BUTTON -->
     <g id="btn-mark" pointer-events="all" display="none">
       <rect x="100" y="250" width="136" height="70" fill="#ffcc00" rx="10" ry="10" />
