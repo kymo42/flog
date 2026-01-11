@@ -7,15 +7,21 @@
   <g id="start-screen" display="inline">
     <rect width="100%" height="100%" fill="black" />
     <text x="50%" y="60" fill="white" font-size="50" font-family="System-Bold" text-anchor="middle">FLOG</text>
+    <text x="50%" y="90" fill="#aaaaaa" font-size="18" text-anchor="middle">Select Course</text>
     
-    <g id="btn-new-course" pointer-events="all">
-      <rect x="28" y="100" width="280" height="80" fill="white" rx="15" ry="15" />
-      <text x="168" y="152" fill="black" font-size="30" font-family="System-Bold" text-anchor="middle" pointer-events="none">NEW COURSE</text>
+    <g id="btn-course-1" pointer-events="all">
+      <rect x="28" y="110" width="280" height="60" fill="#0055ff" rx="15" ry="15" />
+      <text x="168" y="152" fill="white" font-size="30" font-family="System-Bold" text-anchor="middle" pointer-events="none">RAGC 1</text>
     </g>
 
-    <g id="btn-load-list" pointer-events="all">
-      <rect x="28" y="200" width="280" height="80" fill="#0055ff" rx="15" ry="15" />
-      <text x="168" y="252" fill="white" font-size="30" font-family="System-Bold" text-anchor="middle" pointer-events="none">SAVED COURSES</text>
+    <g id="btn-course-2" pointer-events="all">
+      <rect x="28" y="180" width="280" height="60" fill="#0055ff" rx="15" ry="15" />
+      <text x="168" y="222" fill="white" font-size="30" font-family="System-Bold" text-anchor="middle" pointer-events="none">RAGC 2</text>
+    </g>
+    
+    <g id="btn-course-3" pointer-events="all">
+      <rect x="28" y="250" width="280" height="60" fill="#0055ff" rx="15" ry="15" />
+      <text x="168" y="292" fill="white" font-size="30" font-family="System-Bold" text-anchor="middle" pointer-events="none">RAGC 3</text>
     </g>
   </g>
 
@@ -77,17 +83,12 @@
       <text id="txt-mode-status" x="35" y="38" fill="white" font-size="20" font-family="System-Bold" text-anchor="middle" pointer-events="none">EDIT</text>
     </g>
 
-    <!-- HEADER: COURSE NAME -->
-    <text id="txt-main-title" x="50%" y="35" fill="white" font-size="24" font-family="System-Bold" text-anchor="middle">COURSE NAME</text>
-    
-    <!-- HOLE NUMBER (Clickable for jump) -->
-    <g id="btn-hole-jump" pointer-events="all">
-      <text id="txt-hole-num" x="50%" y="65" fill="#aaaaaa" font-size="24" text-anchor="middle">HOLE 1</text>
-    </g>
+    <!-- HOLE NUMBER - Large and prominent -->
+    <text id="txt-hole-num" x="50%" y="100" fill="white" font-size="110" font-family="System-Bold" text-anchor="middle">1</text>
     
     <!-- BIG DISTANCE DISPLAY -->
-    <text id="txt-distance" x="50%" y="175" fill="white" font-size="110" font-family="System-Bold" text-anchor="middle">---</text>
-    <text id="txt-unit" x="50%" y="215" fill="white" font-size="24" text-anchor="middle">METERS</text>
+    <text id="txt-distance" x="50%" y="215" fill="white" font-size="110" font-family="System-Bold" text-anchor="middle">---</text>
+    <text id="txt-unit" x="50%" y="245" fill="white" font-size="24" text-anchor="middle">METERS</text>
 
     <!-- UI Divider -->
     <rect x="10%" y="238" width="80%" height="1" fill="#333333" />
@@ -96,6 +97,11 @@
     <g id="btn-prev-hole" pointer-events="all">
       <rect x="10" y="250" width="80" height="70" fill="#222222" rx="10" ry="10" />
       <text x="50" y="295" fill="white" font-size="40" text-anchor="middle">&lt;</text>
+    </g>
+    
+    <g id="btn-main-menu" pointer-events="all">
+      <rect x="100" y="250" width="60" height="70" fill="#444444" rx="10" ry="10" />
+      <text x="130" y="295" fill="white" font-size="18" text-anchor="middle" pointer-events="none">MENU</text>
     </g>
 
     <!-- MARK BUTTON -->

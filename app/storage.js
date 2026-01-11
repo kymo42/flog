@@ -17,16 +17,49 @@ export function saveCourses(courses) {
 }
 
 /**
- * Load courses from file storage
- * @returns {Array} Array of course objects
+ * Initialize 3 fixed courses (RAGC1, RAGC2, RAGC3) with 18 holes each
+ */
+function initializeFixedCourses() {
+    const courses = [];
+
+    for (let courseNum = 1; courseNum <= 3; courseNum++) {
+        const holes = [];
+        for (let holeNum = 1; holeNum <= 18; holeNum++) {
+            holes.push({
+                number: holeNum,
+                latitude: null,
+                longitude: null
+            });
+        }
+
+        courses.push({
+            id: `ragc${courseNum}`,
+            name: `RAGC ${courseNum}`,
+            holes: holes
+        });
+    }
+
+    return courses;
+}
+
+/**
+ * Load courses from file storage (creates 3 fixed courses if none exist)
+ * @returns {Array} Array of 3 course objects
  */
 export function loadCourses() {
     try {
-        return fs.readFileSync(COURSES_FILE, "cbor") || [];
+        const data = fs.readFileSync(COURSES_FILE, "cbor");
+        if (data && data.length > 0) {
+            return data;
+        }
     } catch (error) {
-        console.log("No courses found, starting fresh");
-        return [];
+        console.log("No courses found, initializing 3 fixed courses");
     }
+
+    // Initialize 3 fixed courses
+    const courses = initializeFixedCourses();
+    saveCourses(courses);
+    return courses;
 }
 
 /**

@@ -237,35 +237,50 @@ function updateCourseList() {
 }
 
 function setupEventListeners() {
-    // START
-    document.getElementById("btn-new-course").onclick = () => {
+    // START SCREEN - 3 Course Buttons
+    const courses = storage.loadCourses(); // Always returns 3 courses
+
+    document.getElementById("btn-course-1").onclick = () => {
         vibration.start("bump");
-        currentCourse = storage.createCourse(`New Round ${new Date().getHours()}:${new Date().getMinutes()}`);
+        currentCourse = courses[0]; // RAGC 1
         currentHole = 1;
-        isSetupMode = true;
+        isSetupMode = false;
         showScreen("main-screen");
         updateUI();
-        syncCourseToPhone();
         storage.saveCurrentRound({ courseId: currentCourse.id, currentHole, timestamp: Date.now() });
     };
 
-    document.getElementById("btn-load-list").onclick = () => {
-        console.log("LOAD SAVED COURSES button clicked");
-        vibration.start("bump"); // Immediate feedback
-        cleanupEmptyCourses(); // Remove courses with no GPS data
-        showScreen("list-screen"); // Show screen first to prove it works
-        updateCourseList(); // Then populate
-        syncCourseListToPhone(); // Then sync
+    document.getElementById("btn-course-2").onclick = () => {
+        vibration.start("bump");
+        currentCourse = courses[1]; // RAGC 2
+        currentHole = 1;
+        isSetupMode = false;
+        showScreen("main-screen");
+        updateUI();
+        storage.saveCurrentRound({ courseId: currentCourse.id, currentHole, timestamp: Date.now() });
     };
 
-    // LIST
-    document.getElementById("btn-list-back").onclick = () => showScreen("start-screen");
+    document.getElementById("btn-course-3").onclick = () => {
+        vibration.start("bump");
+        currentCourse = courses[2]; // RAGC 3
+        currentHole = 1;
+        isSetupMode = false;
+        showScreen("main-screen");
+        updateUI();
+        storage.saveCurrentRound({ courseId: currentCourse.id, currentHole, timestamp: Date.now() });
+    };
 
-    // MAIN
+    // MAIN SCREEN
     btnModeToggle.onclick = () => {
         isSetupMode = !isSetupMode;
         vibration.start("bump");
         updateUI();
+    };
+
+    // MENU button to return to course selection
+    document.getElementById("btn-main-menu").onclick = () => {
+        vibration.start("bump");
+        showScreen("start-screen");
     };
 
     // Hole grid removed - use prev/next buttons only
