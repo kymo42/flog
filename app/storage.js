@@ -43,27 +43,74 @@ function initializeFixedCourses() {
 }
 
 /**
- * Load courses from file storage (creates 4 fixed courses if none exist or if they don't have 18 holes)
+ * Ensure a course has exactly 18 holes, preserving existing GPS data
+ */
+function ensureEighteenHoles(course) {
+    const holes = course.holes || [];
+
+    // If already 18 holes, return as is
+    if (holes.length === 18) {
+        return course;
+    }
+
+    // Create new 18-hole array
+    const newHoles = [];
+    for (let i = 0; i < 18; i++) {
+        if (i < holes.length && holes[i]) {
+            // Preserve existing hole data
+            newHoles.push(holes[i]);
+        } else {
+            // Add new empty hole
+            newHoles.push({
+                number: i + 1,
+                latitude: null,
+                longitude: null
+            });
+        }
+    }
+
+    return {
+        ...course,
+        holes: newHoles
+    };
+}
+
+/**
+ * Load courses from file storage (creates 4 fixed courses if none exist, ensures all have 18 holes)
  * @returns {Array} Array of 4 course objects
  */
 export function loadCourses() {
     try {
         const data = fs.readFileSync(COURSES_FILE, "cbor");
         if (data && data.length > 0) {
-            // Check if all courses have 18 holes
-            let needsReinit = false;
-            for (let i = 0; i < data.length; i++) {
-                if (!data[i].holes || data[i].holes.length !== 18) {
-                    needsReinit = true;
-                    break;
+            // Ensure we have exactly 4 courses
+            let courses = [];
+
+            // Copy existing courses (up to 4)
+            for (let i = 0; i < 4; i++) {
+                if (i < data.length && data[i]) {
+                    courses.push(ensureEighteenHoles(data[i]));
+                } else {
+                    // Create missing course
+                    const holes = [];
+                    for (let j = 0; j < 18; j++) {
+                        holes.push({
+                            number: j + 1,
+                            latitude: null,
+                            longitude: null
+                        });
+                    }
+                    courses.push({
+                        id: `course${i + 1}`,
+                        name: `Course ${i + 1}`,
+                        holes: holes
+                    });
                 }
             }
 
-            if (!needsReinit && data.length === 4) {
-                return data;
-            }
-
-            console.log("Courses need reinitialization (wrong hole count or course count)");
+            // Save updated courses if we made changes
+            saveCourses(courses);
+            return courses;
         }
     } catch (error) {
         console.log("No courses found, initializing 4 fixed courses");
