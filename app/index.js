@@ -89,8 +89,8 @@ function updateUI() {
     console.log(`Setting hole text: currentHole=${currentHole}, text=H${currentHole}`);
     txtHoleNum.text = `H${currentHole}`;
 
-    // Unit label
-    txtUnit.text = settings.useYards ? "YARDS" : "METERS";
+    // Unit label - DEBUG: Show currentHole value
+    txtUnit.text = `${settings.useYards ? "YARDS" : "METERS"} [H${currentHole}]`;
 
     // Distance
     if (lastGpsPos) {
@@ -101,12 +101,12 @@ function updateUI() {
                 hole.latitude, hole.longitude
             );
             const val = settings.useYards ? Math.round(m * 1.09361) : Math.round(m);
-            txtDistance.text = `${val} [${currentHole}]`; // DEBUG: Show currentHole value
+            txtDistance.text = val.toString();
         } else {
-            txtDistance.text = `--- [${currentHole}]`; // DEBUG: Show currentHole value
+            txtDistance.text = "---";
         }
     } else {
-        txtDistance.text = `--- [${currentHole}]`; // DEBUG: Show currentHole value
+        txtDistance.text = "---";
     }
 }
 
