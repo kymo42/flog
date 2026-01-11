@@ -85,8 +85,8 @@ function updateUI() {
     // Course Name Header
     if (txtMainTitle) txtMainTitle.text = currentCourse.name.toUpperCase().substring(0, 15);
 
-    // Hole
-    txtHoleNum.text = `HOLE ${currentHole}`;
+    // Hole - H + number
+    txtHoleNum.text = `H${currentHole}`;
 
     // Unit label
     txtUnit.text = settings.useYards ? "YARDS" : "METERS";
