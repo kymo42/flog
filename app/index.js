@@ -128,6 +128,9 @@ function syncCourseListToPhone() {
     }
 }
 
+// Track delete confirmation states
+const deleteConfirmStates = {};
+
 function updateCourseList() {
     const list = storage.loadCourses();
     for (let i = 0; i < 3; i++) {
@@ -150,14 +153,43 @@ function updateCourseList() {
                 storage.saveCurrentRound({ courseId: currentCourse.id, currentHole, timestamp: Date.now() });
             };
 
-            // Delete handler
+            // Delete handler with two-factor confirmation
             if (deleteBtn) {
+                const deleteTxt = document.getElementById(`txt-delete-${i}`);
+                const deleteRect = document.getElementById(`rect-delete-${i}`);
+
+                // Reset state on list refresh
+                if (deleteTxt) deleteTxt.text = "X";
+                if (deleteRect) deleteRect.style.fill = "#aa0000";
+                deleteConfirmStates[i] = false;
+
                 deleteBtn.onclick = (e) => {
                     e.stopPropagation(); // Prevent course load
-                    storage.deleteCourse(list[i].id);
-                    vibration.start("confirmation");
-                    updateCourseList(); // Refresh list
-                    syncCourseListToPhone();
+
+                    if (deleteConfirmStates[i]) {
+                        // Second tap - actually delete
+                        storage.deleteCourse(list[i].id);
+                        vibration.start("confirmation");
+                        updateCourseList(); // Refresh list
+                        syncCourseListToPhone();
+                    } else {
+                        // First tap - show confirmation
+                        deleteConfirmStates[i] = true;
+                        if (deleteTxt) deleteTxt.text = "?";
+                        if (deleteRect) deleteRect.style.fill = "#ff0000";
+                        vibration.start("nudge");
+
+                        // Reset after 3 seconds
+                        setTimeout(() => {
+                            if (deleteConfirmStates[i]) {
+                                deleteConfirmStates[i] = false;
+                                const resetTxt = document.getElementById(`txt-delete-${i}`);
+                                const resetRect = document.getElementById(`rect-delete-${i}`);
+                                if (resetTxt) resetTxt.text = "X";
+                                if (resetRect) resetRect.style.fill = "#aa0000";
+                            }
+                        }, 3000);
+                    }
                 };
             }
         } else {
@@ -180,6 +212,7 @@ function setupEventListeners() {
     };
 
     document.getElementById("btn-load-list").onclick = () => {
+        console.log("LOAD SAVED COURSES button clicked");
         vibration.start("bump");
         updateCourseList();
         syncCourseListToPhone();
@@ -337,6 +370,11 @@ display.onchange = () => {
 };
 
 setupEventListeners();
+
+// Sync course list to phone on startup
+setTimeout(() => {
+    syncCourseListToPhone();
+}, 1000);
 
 // Auto-resume last round if available
 const savedRound = storage.loadCurrentRound();

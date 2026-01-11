@@ -10,12 +10,12 @@
     
     <g id="btn-new-course" pointer-events="all">
       <rect x="28" y="100" width="280" height="80" fill="white" rx="15" ry="15" />
-      <text x="168" y="152" fill="black" font-size="30" font-family="System-Bold" text-anchor="middle">NEW COURSE</text>
+      <text x="168" y="152" fill="black" font-size="30" font-family="System-Bold" text-anchor="middle" pointer-events="none">NEW COURSE</text>
     </g>
 
     <g id="btn-load-list" pointer-events="all">
       <rect x="28" y="200" width="280" height="80" fill="#0055ff" rx="15" ry="15" />
-      <text x="168" y="252" fill="white" font-size="30" font-family="System-Bold" text-anchor="middle">SAVED COURSES</text>
+      <text x="168" y="252" fill="white" font-size="30" font-family="System-Bold" text-anchor="middle" pointer-events="none">SAVED COURSES</text>
     </g>
   </g>
 
@@ -30,24 +30,24 @@
       <rect x="10" y="60" width="270" height="60" fill="#222222" rx="10" ry="10" />
       <text id="txt-course-0" x="145" y="100" fill="white" font-size="24" text-anchor="middle">---</text>
       <g id="btn-delete-0" pointer-events="all">
-        <rect x="290" y="70" width="30" height="40" fill="#aa0000" rx="5" ry="5" />
-        <text x="305" y="97" fill="white" font-size="24" text-anchor="middle" pointer-events="none">X</text>
+        <rect id="rect-delete-0" x="290" y="70" width="30" height="40" fill="#aa0000" rx="5" ry="5" />
+        <text id="txt-delete-0" x="305" y="97" fill="white" font-size="24" text-anchor="middle" pointer-events="none">X</text>
       </g>
     </g>
     <g id="btn-course-1" pointer-events="all" display="none">
       <rect x="10" y="130" width="270" height="60" fill="#222222" rx="10" ry="10" />
       <text id="txt-course-1" x="145" y="170" fill="white" font-size="24" text-anchor="middle">---</text>
       <g id="btn-delete-1" pointer-events="all">
-        <rect x="290" y="140" width="30" height="40" fill="#aa0000" rx="5" ry="5" />
-        <text x="305" y="167" fill="white" font-size="24" text-anchor="middle" pointer-events="none">X</text>
+        <rect id="rect-delete-1" x="290" y="140" width="30" height="40" fill="#aa0000" rx="5" ry="5" />
+        <text id="txt-delete-1" x="305" y="167" fill="white" font-size="24" text-anchor="middle" pointer-events="none">X</text>
       </g>
     </g>
     <g id="btn-course-2" pointer-events="all" display="none">
       <rect x="10" y="200" width="270" height="60" fill="#222222" rx="10" ry="10" />
       <text id="txt-course-2" x="145" y="240" fill="white" font-size="24" text-anchor="middle">---</text>
       <g id="btn-delete-2" pointer-events="all">
-        <rect x="290" y="210" width="30" height="40" fill="#aa0000" rx="5" ry="5" />
-        <text x="305" y="237" fill="white" font-size="24" text-anchor="middle" pointer-events="none">X</text>
+        <rect id="rect-delete-2" x="290" y="210" width="30" height="40" fill="#aa0000" rx="5" ry="5" />
+        <text id="txt-delete-2" x="305" y="237" fill="white" font-size="24" text-anchor="middle" pointer-events="none">X</text>
       </g>
     </g>
 
