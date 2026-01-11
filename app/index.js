@@ -213,10 +213,10 @@ function setupEventListeners() {
 
     document.getElementById("btn-load-list").onclick = () => {
         console.log("LOAD SAVED COURSES button clicked");
-        vibration.start("bump");
-        updateCourseList();
-        syncCourseListToPhone();
-        showScreen("list-screen");
+        vibration.start("bump"); // Immediate feedback
+        showScreen("list-screen"); // Show screen first to prove it works
+        updateCourseList(); // Then populate
+        syncCourseListToPhone(); // Then sync
     };
 
     // LIST
