@@ -97,11 +97,11 @@
       <rect x="0" y="55" width="80" height="60" fill="transparent" />
     </g>
     
-    <!-- MENU label - just visual -->
-    <text x="40" y="85" fill="#888888" font-size="16" text-anchor="middle" pointer-events="none">MENU</text>
+    <!-- Green left arrow instead of MENU text -->
+    <text x="40" y="90" fill="#00ff00" font-size="40" text-anchor="middle" pointer-events="none">←</text>
 
     <!-- HOLE NUMBER - Large and prominent -->
-    <text id="txt-hole-num" x="50%" y="85" fill="white" font-size="60" font-family="System-Bold" text-anchor="middle" pointer-events="none">H 18</text>
+    <text id="txt-hole-num" x="50%" y="85" fill="white" font-size="60" font-family="System-Bold" text-anchor="middle" pointer-events="none">HOLE 18</text>
     
     <!-- BIG DISTANCE DISPLAY -->
     <text id="txt-distance" x="50%" y="215" fill="white" font-size="110" font-family="System-Bold" text-anchor="middle">---</text>

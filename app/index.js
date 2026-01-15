@@ -102,9 +102,21 @@ function updateUI() {
     // Course Name Header
     if (txtMainTitle) txtMainTitle.text = currentCourse.name.toUpperCase().substring(0, 15);
 
-    // Hole - H + number
-    console.log(`Setting hole text: currentHole=${currentHole}, text=H${currentHole}`);
-    txtHoleNum.text = `H ${currentHole}`;
+    // Hole - HOLE 01 format with course color
+    const holeNumFormatted = currentHole < 10 ? `0${currentHole}` : `${currentHole}`;
+    console.log(`Setting hole text: currentHole=${currentHole}, text=HOLE ${holeNumFormatted}`);
+    txtHoleNum.text = `HOLE ${holeNumFormatted}`;
+
+    // Set hole text color based on course
+    const courseColors = {
+        'course1': '#0088ff',  // Blue
+        'course2': '#ffcc00',  // Yellow
+        'course3': '#ff3333',  // Red
+        'course4': '#ff8800'   // Orange
+    };
+    if (currentCourse && courseColors[currentCourse.id]) {
+        txtHoleNum.style.fill = courseColors[currentCourse.id];
+    }
 
     // Unit label - DEBUG: Show currentHole value
     txtUnit.text = `${settings.useYards ? "YARDS" : "METERS"} [H${currentHole}]`;
