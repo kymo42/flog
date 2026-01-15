@@ -8,7 +8,7 @@ import { display } from "display";
 import { me as appbit } from "appbit";
 
 
-console.log("Flog v4.1 - Debugging Save");
+console.log("Flog v4.2 - Predictive GPS");
 
 // State
 let currentCourse = null;
@@ -16,6 +16,13 @@ let currentHole = 1;
 let lastGpsPos = null;
 let settings = storage.loadSettings();
 let isSetupMode = false;
+
+// Predictive GPS state
+let lastKnownDistance = null;
+let lastDistanceCheck = 0;
+let reachedGreen = false;
+let gpsAcquisitionActive = false;
+let keepAliveTimer = null;
 
 // UI Elements
 const screens = ["start-screen", "list-screen", "main-screen", "mark-screen", "hole-select-screen"];
@@ -40,7 +47,16 @@ function showScreen(screenId) {
     // Reset display behavior to system defaults (Battery Safe)
     display.autoOff = true;
     if (screenId === "main-screen" || screenId === "mark-screen") {
-        display.on = true; // Just wake it up initially
+        display.on = true;
+
+        // Start GPS and keep-alive when entering main screen
+        if (screenId === "main-screen") {
+            gps.startGPS(onGPSUpdate, onGPSError);
+            startKeepAlive();
+        }
+    } else {
+        // Stop keep-alive when leaving main screen
+        stopKeepAlive();
     }
 }
 
@@ -128,6 +144,98 @@ function syncCourseListToPhone() {
             data: courses
         });
     }
+}
+
+// ============================================================
+// PREDICTIVE GPS FUNCTIONS
+// ============================================================
+
+function checkGreenAndAdvance() {
+    if (lastKnownDistance === null) return;
+
+    if (lastKnownDistance <= 0) {
+        if (!reachedGreen) {
+            reachedGreen = true;
+            console.log("Reached green (0m)");
+        }
+    }
+
+    if (reachedGreen && lastKnownDistance > 10) {
+        console.log(`Moved away from green (${Math.round(lastKnownDistance)}m) - advancing`);
+
+        if (currentHole < 18) {
+            currentHole++;
+            reachedGreen = false;
+            vibration.start("confirmation");
+
+            gps.startGPS(onGPSUpdate, onGPSError);
+            gpsAcquisitionActive = true;
+
+            updateUI();
+            storage.saveCurrentRound({
+                courseId: currentCourse.id,
+                currentHole,
+                timestamp: Date.now()
+            });
+        }
+    }
+}
+
+function checkMidShotGPS() {
+    if (lastKnownDistance === null || lastKnownDistance < 100) return;
+
+    const now = Date.now();
+    if (now - lastDistanceCheck < 30000) return;
+
+    console.log(`Mid-shot GPS (${Math.round(lastKnownDistance)}m)`);
+    gps.startGPS(onGPSUpdate, onGPSError);
+    gpsAcquisitionActive = true;
+    lastDistanceCheck = now;
+}
+
+function startKeepAlive() {
+    if (keepAliveTimer) return;
+
+    console.log("Starting keep-alive");
+    keepAliveTimer = setInterval(() => {
+        checkGreenAndAdvance();
+        checkMidShotGPS();
+        if (gpsAcquisitionActive) updateUI();
+    }, 30000);
+}
+
+function stopKeepAlive() {
+    if (keepAliveTimer) {
+        clearInterval(keepAliveTimer);
+        keepAliveTimer = null;
+    }
+}
+
+function onGPSUpdate(position) {
+    lastGpsPos = position;
+
+    if (currentCourse && currentHole) {
+        const hole = currentCourse.holes[currentHole - 1];
+        if (hole && hole.latitude && hole.longitude) {
+            const distanceMeters = calculateDistance(
+                position.latitude,
+                position.longitude,
+                hole.latitude,
+                hole.longitude
+            );
+
+            lastKnownDistance = settings.useYards
+                ? Math.round(distanceMeters * 1.09361)
+                : Math.round(distanceMeters);
+        }
+    }
+
+    updateUI();
+}
+
+function onGPSError(error) {
+    console.error("GPS Error:", error);
+    gpsAcquisitionActive = false;
 }
 
 /**
