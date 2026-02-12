@@ -8,7 +8,7 @@ import { display } from "display";
 import { me as appbit } from "appbit";
 
 
-console.log("Flog v4.2 - Predictive GPS");
+console.log("Flog v4.3 - Data Loss Fix");
 
 // State
 let currentCourse = null;
@@ -16,13 +16,6 @@ let currentHole = 1;
 let lastGpsPos = null;
 let settings = storage.loadSettings();
 let isSetupMode = false;
-
-// Predictive GPS state
-let lastKnownDistance = null;
-let lastDistanceCheck = 0;
-let reachedGreen = false;
-let gpsAcquisitionActive = false;
-let keepAliveTimer = null;
 
 // UI Elements
 const screens = ["start-screen", "list-screen", "main-screen", "mark-screen", "hole-select-screen"];
@@ -44,19 +37,44 @@ function showScreen(screenId) {
         if (el) el.style.display = (s === screenId) ? "inline" : "none";
     });
 
-    // Reset display behavior to system defaults (Battery Safe)
-    display.autoOff = true;
-    if (screenId === "main-screen" || screenId === "mark-screen") {
+    // Display management for better persistence
+    if (screenId === "main-screen") {
+        display.autoOff = false;  // Keep display on during play
         display.on = true;
+        display.poke();           // Wake up display
 
-        // Start GPS and keep-alive when entering main screen
-        if (screenId === "main-screen") {
-            gps.startGPS(onGPSUpdate, onGPSError);
-            startKeepAlive();
-        }
+        // Start GPS with cache saving
+        gps.startGPS((position) => {
+            lastGpsPos = position;
+
+            // Save to cache for instant resume
+            if (currentCourse && currentHole) {
+                const hole = currentCourse.holes[currentHole - 1];
+                if (hole && hole.latitude && hole.longitude) {
+                    const distanceMeters = calculateDistance(
+                        position.latitude,
+                        position.longitude,
+                        hole.latitude,
+                        hole.longitude
+                    );
+                    const distance = settings.useYards
+                        ? Math.round(distanceMeters * 1.09361)
+                        : Math.round(distanceMeters);
+
+                    saveGPSToCache(position, distance);
+                }
+            }
+
+            updateUI();
+        }, (error) => {
+            console.error("GPS Error:", error);
+        });
+    } else if (screenId === "mark-screen") {
+        display.on = true;
+        display.autoOff = true;
     } else {
-        // Stop keep-alive when leaving main screen
-        stopKeepAlive();
+        // Allow sleep on other screens
+        display.autoOff = true;
     }
 }
 
@@ -159,95 +177,31 @@ function syncCourseListToPhone() {
 }
 
 // ============================================================
-// PREDICTIVE GPS FUNCTIONS
+// GPS CACHE FOR INSTANT RESUME
 // ============================================================
 
-function checkGreenAndAdvance() {
-    if (lastKnownDistance === null) return;
+/**
+ * Save GPS position to cache for instant resume
+ */
+function saveGPSToCache(position, distance) {
+    const cache = {
+        position: position,
+        distance: distance,
+        timestamp: Date.now()
+    };
+    storage.saveGPSCache(cache);
+}
 
-    if (lastKnownDistance <= 0) {
-        if (!reachedGreen) {
-            reachedGreen = true;
-            console.log("Reached green (0m)");
-        }
+/**
+ * Load GPS cache on app start for instant display
+ */
+function loadGPSFromCache() {
+    const cache = storage.loadGPSCache();
+    if (cache && (Date.now() - cache.timestamp) < 300000) { // 5 min
+        lastGpsPos = cache.position;
+        console.log(`Loaded GPS cache (${Math.round((Date.now() - cache.timestamp) / 1000)}s old)`);
+        updateUI(); // Show cached distance immediately
     }
-
-    if (reachedGreen && lastKnownDistance > 10) {
-        console.log(`Moved away from green (${Math.round(lastKnownDistance)}m) - advancing`);
-
-        if (currentHole < 18) {
-            currentHole++;
-            reachedGreen = false;
-            vibration.start("confirmation");
-
-            gps.startGPS(onGPSUpdate, onGPSError);
-            gpsAcquisitionActive = true;
-
-            updateUI();
-            storage.saveCurrentRound({
-                courseId: currentCourse.id,
-                currentHole,
-                timestamp: Date.now()
-            });
-        }
-    }
-}
-
-function checkMidShotGPS() {
-    if (lastKnownDistance === null || lastKnownDistance < 100) return;
-
-    const now = Date.now();
-    if (now - lastDistanceCheck < 30000) return;
-
-    console.log(`Mid-shot GPS (${Math.round(lastKnownDistance)}m)`);
-    gps.startGPS(onGPSUpdate, onGPSError);
-    gpsAcquisitionActive = true;
-    lastDistanceCheck = now;
-}
-
-function startKeepAlive() {
-    if (keepAliveTimer) return;
-
-    console.log("Starting keep-alive");
-    keepAliveTimer = setInterval(() => {
-        checkGreenAndAdvance();
-        checkMidShotGPS();
-        if (gpsAcquisitionActive) updateUI();
-    }, 30000);
-}
-
-function stopKeepAlive() {
-    if (keepAliveTimer) {
-        clearInterval(keepAliveTimer);
-        keepAliveTimer = null;
-    }
-}
-
-function onGPSUpdate(position) {
-    lastGpsPos = position;
-
-    if (currentCourse && currentHole) {
-        const hole = currentCourse.holes[currentHole - 1];
-        if (hole && hole.latitude && hole.longitude) {
-            const distanceMeters = calculateDistance(
-                position.latitude,
-                position.longitude,
-                hole.latitude,
-                hole.longitude
-            );
-
-            lastKnownDistance = settings.useYards
-                ? Math.round(distanceMeters * 1.09361)
-                : Math.round(distanceMeters);
-        }
-    }
-
-    updateUI();
-}
-
-function onGPSError(error) {
-    console.error("GPS Error:", error);
-    gpsAcquisitionActive = false;
 }
 
 /**
@@ -562,6 +516,9 @@ setTimeout(() => {
     cleanupEmptyCourses();
     syncCourseListToPhone();
 }, 1000);
+
+// Load GPS cache for instant resume
+loadGPSFromCache();
 
 // Auto-resume last round if available
 const savedRound = storage.loadCurrentRound();

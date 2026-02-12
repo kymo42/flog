@@ -1,18 +1,52 @@
 import * as fs from "fs";
 
 const COURSES_FILE = "courses.cbor";
+const COURSES_BACKUP = "courses_backup.cbor";
 const SETTINGS_FILE = "settings.cbor";
 const CURRENT_ROUND_FILE = "current_round.cbor";
+const GPS_CACHE_FILE = "gps_cache.cbor";
 
 /**
- * Save courses to file storage
+ * Validate course data structure
+ */
+function validateCourse(course) {
+    if (!course || !course.id || !course.holes) return false;
+    if (!Array.isArray(course.holes) || course.holes.length !== 18) return false;
+    return true;
+}
+
+/**
+ * Validate courses array
+ */
+function validateCourses(courses) {
+    if (!Array.isArray(courses) || courses.length === 0) return false;
+    return courses.every(c => validateCourse(c));
+}
+
+/**
+ * Save courses to file storage with backup
  * @param {Array} courses - Array of course objects
+ * @returns {boolean} - Success status
  */
 export function saveCourses(courses) {
     try {
+        // Validate data before saving
+        if (!validateCourses(courses)) {
+            console.error("Invalid courses data - not saving");
+            return false;
+        }
+
+        // Save to main file
         fs.writeFileSync(COURSES_FILE, courses, "cbor");
+
+        // Save backup copy
+        fs.writeFileSync(COURSES_BACKUP, courses, "cbor");
+
+        console.log(`Saved ${courses.length} courses with backup`);
+        return true;
     } catch (error) {
         console.error("Error saving courses:", error);
+        return false;
     }
 }
 
@@ -113,7 +147,45 @@ export function loadCourses() {
             return courses;
         }
     } catch (error) {
-        console.log("No courses found, initializing 4 fixed courses");
+        console.log("Main courses file error, trying backup:", error);
+    }
+
+    // Try backup file
+    try {
+        const data = fs.readFileSync(COURSES_BACKUP, "cbor");
+        if (data && data.length > 0 && validateCourses(data)) {
+            console.log(`Restored ${data.length} courses from backup!`);
+
+            // Restore main file
+            fs.writeFileSync(COURSES_FILE, data, "cbor");
+
+            // Process backup data same as main
+            let courses = [];
+            for (let i = 0; i < 4; i++) {
+                if (i < data.length && data[i]) {
+                    courses.push(ensureEighteenHoles(data[i]));
+                } else {
+                    const holes = [];
+                    for (let j = 0; j < 18; j++) {
+                        holes.push({
+                            number: j + 1,
+                            latitude: null,
+                            longitude: null
+                        });
+                    }
+                    courses.push({
+                        id: `course${i + 1}`,
+                        name: `Course ${i + 1}`,
+                        holes: holes
+                    });
+                }
+            }
+
+            saveCourses(courses);
+            return courses;
+        }
+    } catch (error) {
+        console.log("Backup also failed, initializing fresh");
     }
 
     // Initialize 4 fixed courses with 18 holes each
@@ -342,5 +414,27 @@ export function deleteCourse(courseId) {
         console.log('Deleted course:', courseId);
     } catch (error) {
         console.error('Error deleting course:', error);
+    }
+}
+
+/**
+ * Save GPS position cache for instant resume
+ */
+export function saveGPSCache(cache) {
+    try {
+        fs.writeFileSync(GPS_CACHE_FILE, cache, "cbor");
+    } catch (error) {
+        console.error("Error saving GPS cache:", error);
+    }
+}
+
+/**
+ * Load GPS position cache
+ */
+export function loadGPSCache() {
+    try {
+        return fs.readFileSync(GPS_CACHE_FILE, "cbor");
+    } catch (error) {
+        return null;
     }
 }
