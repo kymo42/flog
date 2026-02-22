@@ -12,11 +12,13 @@ let gpsErrorCallback = null;
  * @param {Function} onError - Callback for errors
  */
 export function startGPS(onPosition, onError) {
+    // Always update callbacks FIRST, even if GPS already running
+    // This ensures the latest callback (e.g. with cache-saving) is always used
     gpsCallback = onPosition;
     gpsErrorCallback = onError;
 
     if (watchId !== null) {
-        console.log("GPS already running");
+        console.log("GPS already running - callbacks updated");
         return;
     }
 

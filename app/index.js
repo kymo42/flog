@@ -136,8 +136,8 @@ function updateUI() {
         txtHoleNum.style.fill = courseColors[currentCourse.id];
     }
 
-    // Unit label - DEBUG: Show currentHole value
-    txtUnit.text = `${settings.useYards ? "YARDS" : "METERS"} [H${currentHole}]`;
+    // Unit label
+    txtUnit.text = settings.useYards ? "YARDS" : "METERS";
 
     // Distance
     if (lastGpsPos) {
@@ -498,7 +498,7 @@ messaging.peerSocket.onmessage = (evt) => {
 };
 
 
-gps.startGPS((pos) => { lastGpsPos = pos; updateUI(); }, (err) => { console.warn(err); });
+// GPS is started by showScreen("main-screen") - no need to start here
 
 // GPS on wrist-raise for instant updates
 display.onchange = () => {
@@ -511,9 +511,10 @@ display.onchange = () => {
 
 setupEventListeners();
 
-// Clean up empty courses and sync to phone on startup
+// Sync courses to phone on startup
+// Note: cleanupEmptyCourses() is NOT called here - it can delete
+// courses that haven't been configured yet (no holes marked).
 setTimeout(() => {
-    cleanupEmptyCourses();
     syncCourseListToPhone();
 }, 1000);
 
