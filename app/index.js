@@ -548,8 +548,6 @@ display.onchange = () => {
 setupEventListeners();
 
 // Sync courses to phone on startup
-// Note: cleanupEmptyCourses() is NOT called here - it can delete
-// courses that haven't been configured yet (no holes marked).
 setTimeout(() => {
     syncCourseListToPhone();
 }, 1000);
@@ -557,11 +555,10 @@ setTimeout(() => {
 // Load GPS cache for instant resume
 loadGPSFromCache();
 
-// Auto-resume last round if available
+// Auto-resume last round if within 24 hours
 const savedRound = storage.loadCurrentRound();
 if (savedRound && savedRound.courseId) {
     const timeSince = Date.now() - (savedRound.timestamp || 0);
-    // Auto-resume if less than 24 hours old
     if (timeSince < 24 * 60 * 60 * 1000) {
         currentCourse = storage.loadCourse(savedRound.courseId);
         if (currentCourse) {
@@ -570,7 +567,7 @@ if (savedRound && savedRound.courseId) {
             showScreen("main-screen");
             updateUI();
             syncCourseToPhone();
-            console.log("Auto-resumed round:", currentCourse.name, "Hole", currentHole);
+            console.log("Auto-resumed:", currentCourse.name, "Hole", currentHole);
         } else {
             showScreen("start-screen");
         }
@@ -583,7 +580,7 @@ if (savedRound && savedRound.courseId) {
 
 if (vibration) vibration.start("nudge");
 
-// Save state when app is about to close (for quick resume)
+// Save state when app closes
 appbit.addEventListener("unload", () => {
     console.log("App unloading - saving state");
     if (currentCourse && currentHole) {
