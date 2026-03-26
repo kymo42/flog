@@ -39,11 +39,8 @@ function showScreen(screenId) {
 
     // Display management for better persistence
     if (screenId === "main-screen") {
-        display.autoOff = false;  // Keep display on during play
-        display.on = true;
-        display.poke();           // Wake up display
-
-        // Start GPS with cache saving
+        // Start GPS FIRST before any display calls that might throw
+        console.log("showScreen: calling startGPS now");
         gps.startGPS((position) => {
             lastGpsPos = position;
 
@@ -69,6 +66,15 @@ function showScreen(screenId) {
         }, (error) => {
             console.error("GPS Error:", error);
         });
+
+        // Display management (after GPS start)
+        try {
+            display.autoOff = false;
+            display.on = true;
+            display.poke();
+        } catch (e) {
+            console.log("Display management error (non-fatal):", e);
+        }
     } else if (screenId === "mark-screen") {
         display.on = true;
         display.autoOff = true;
@@ -159,20 +165,31 @@ function updateUI() {
 
 function syncCourseToPhone() {
     if (currentCourse && messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
-        messaging.peerSocket.send({
-            type: "export-course",
-            data: currentCourse
-        });
+        try {
+            messaging.peerSocket.send({
+                type: "export-course",
+                data: currentCourse
+            });
+        } catch (e) {
+            console.error("Course sync to phone failed:", e);
+        }
     }
 }
 
 function syncCourseListToPhone() {
     if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
         const courses = storage.loadCourses();
-        messaging.peerSocket.send({
-            type: "sync-courses",
-            data: courses
-        });
+        // Send lightweight summaries only - full GPS data exceeds messaging size limit
+        const summaries = courses.map(c => ({
+            id: c.id,
+            name: c.name,
+            markedHoles: c.holes ? c.holes.filter(h => h.latitude && h.longitude).length : 0
+        }));
+        try {
+            messaging.peerSocket.send({ type: "sync-courses", data: summaries });
+        } catch (e) {
+            console.error("Sync to phone failed:", e);
+        }
     }
 }
 
@@ -500,12 +517,31 @@ messaging.peerSocket.onmessage = (evt) => {
 
 // GPS is started by showScreen("main-screen") - no need to start here
 
-// GPS on wrist-raise for instant updates
+// GPS on wrist-raise - restart GPS to ensure it's actively running
 display.onchange = () => {
     if (display.on && currentCourse) {
-        console.log("Wrist raised - updating GPS");
-        // UI will auto-update via GPS callback
-        updateUI(); // Force immediate UI refresh
+        console.log("Wrist raised - restarting GPS");
+        gps.stopGPS();
+        gps.startGPS((position) => {
+            lastGpsPos = position;
+            if (currentCourse && currentHole) {
+                const hole = currentCourse.holes[currentHole - 1];
+                if (hole && hole.latitude && hole.longitude) {
+                    const distanceMeters = calculateDistance(
+                        position.latitude, position.longitude,
+                        hole.latitude, hole.longitude
+                    );
+                    const distance = settings.useYards
+                        ? Math.round(distanceMeters * 1.09361)
+                        : Math.round(distanceMeters);
+                    saveGPSToCache(position, distance);
+                }
+            }
+            updateUI();
+        }, (error) => {
+            console.error("GPS Error (wrist-raise):", error);
+        });
+        updateUI();
     }
 };
 
