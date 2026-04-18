@@ -1,5 +1,8 @@
 <svg viewport-fill="black">
-  <link rel="stylesheet" href="styles.css" />
+  <defs>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="import" href="/mnt/sysassets/system_widget.defs" />
+  </defs>
 
   <!-- ========================================================== -->
   <!-- START SCREEN                                               -->
@@ -94,7 +97,7 @@
     
     <!-- MENU button - left side at hole number height -->
     <g id="btn-main-menu" pointer-events="all">
-      <rect x="0" y="55" width="80" height="60" fill="transparent" />
+      <rect x="0" y="55" width="80" height="60" opacity="0" />
     </g>
     
     <!-- Green left arrow instead of MENU text -->

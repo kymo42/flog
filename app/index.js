@@ -269,9 +269,11 @@ function updateCourseList() {
         const txt = document.getElementById(`txt-course-${i}`);
         const deleteBtn = document.getElementById(`btn-delete-${i}`);
 
+        if (!btn) continue; // null guard - element may not exist in view
+
         if (list[i]) {
             btn.style.display = "inline";
-            txt.text = list[i].name || `Course ${i + 1}`;
+            if (txt) txt.text = list[i].name || `Course ${i + 1}`;
 
             // Course load handler
             btn.onclick = () => {
@@ -295,22 +297,19 @@ function updateCourseList() {
                 deleteConfirmStates[i] = false;
 
                 deleteBtn.onclick = (e) => {
-                    e.stopPropagation(); // Prevent course load
+                    e.stopPropagation();
 
                     if (deleteConfirmStates[i]) {
-                        // Second tap - actually delete
                         storage.deleteCourse(list[i].id);
                         vibration.start("confirmation");
-                        updateCourseList(); // Refresh list
+                        updateCourseList();
                         syncCourseListToPhone();
                     } else {
-                        // First tap - show confirmation
                         deleteConfirmStates[i] = true;
                         if (deleteTxt) deleteTxt.text = "?";
                         if (deleteRect) deleteRect.style.fill = "#ff0000";
                         vibration.start("nudge");
 
-                        // Reset after 3 seconds
                         setTimeout(() => {
                             if (deleteConfirmStates[i]) {
                                 deleteConfirmStates[i] = false;
@@ -468,6 +467,33 @@ function setupEventListeners() {
         }
     };
     document.getElementById("btn-mark-cancel").onclick = () => showScreen("main-screen");
+
+    // BACK NAVIGATION (Physical Button & Swipe Left-to-Right)
+    document.onkeypress = (evt) => {
+        if (evt.key === "back") {
+            // Find which screen is currently visible
+            let activeScreen = "start-screen";
+            screens.forEach(s => {
+                const el = document.getElementById(s);
+                if (el && el.style.display === "inline") activeScreen = s;
+            });
+
+            if (activeScreen === "start-screen") {
+                // We are at the start, let the OS handle it (which closes the app)
+                return;
+            } else {
+                // Cancel OS close behavior, navigate backwards instead
+                evt.preventDefault();
+                vibration.start("bump");
+                
+                if (activeScreen === "main-screen" || activeScreen === "list-screen") {
+                    showScreen("start-screen");
+                } else if (activeScreen === "mark-screen" || activeScreen === "hole-select-screen") {
+                    showScreen("main-screen");
+                }
+            }
+        }
+    };
 }
 
 // Messaging
@@ -517,30 +543,11 @@ messaging.peerSocket.onmessage = (evt) => {
 
 // GPS is started by showScreen("main-screen") - no need to start here
 
-// GPS on wrist-raise - restart GPS to ensure it's actively running
+// GPS on wrist-raise - just refresh UI with latest cached data
+// Do NOT stop/restart GPS - causes thrashing and potential hang
 display.onchange = () => {
     if (display.on && currentCourse) {
-        console.log("Wrist raised - restarting GPS");
-        gps.stopGPS();
-        gps.startGPS((position) => {
-            lastGpsPos = position;
-            if (currentCourse && currentHole) {
-                const hole = currentCourse.holes[currentHole - 1];
-                if (hole && hole.latitude && hole.longitude) {
-                    const distanceMeters = calculateDistance(
-                        position.latitude, position.longitude,
-                        hole.latitude, hole.longitude
-                    );
-                    const distance = settings.useYards
-                        ? Math.round(distanceMeters * 1.09361)
-                        : Math.round(distanceMeters);
-                    saveGPSToCache(position, distance);
-                }
-            }
-            updateUI();
-        }, (error) => {
-            console.error("GPS Error (wrist-raise):", error);
-        });
+        console.log("Wrist raised - refreshing UI");
         updateUI();
     }
 };
@@ -552,9 +559,6 @@ setTimeout(() => {
     syncCourseListToPhone();
 }, 1000);
 
-// Load GPS cache for instant resume
-loadGPSFromCache();
-
 // Auto-resume last round if within 24 hours
 const savedRound = storage.loadCurrentRound();
 if (savedRound && savedRound.courseId) {
@@ -565,6 +569,7 @@ if (savedRound && savedRound.courseId) {
             currentHole = savedRound.currentHole || 1;
             isSetupMode = false;
             showScreen("main-screen");
+            loadGPSFromCache(); // Load AFTER showScreen so UI elements exist
             updateUI();
             syncCourseToPhone();
             console.log("Auto-resumed:", currentCourse.name, "Hole", currentHole);
